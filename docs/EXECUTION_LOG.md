@@ -365,7 +365,8 @@ This document records chronological execution steps, architectural implementatio
     - Removed obsolete `docs/screenshots/` directory completely.
     - Updated `docs/SCREENSHOT_GUIDE.md` and `docs/README.md` to reference `images/dashboard/`.
   - Master README overhaul:
-    - Restructured root `README.md` into 24 comprehensive sections equipped with an interactive Table of Contents with valid anchor links.
+    - Restructured root `README.md` into 29 comprehensive sections equipped with an interactive Table of Contents with valid anchor links.
+    - Added dedicated deep-dive sections for Email Template Architecture, Temporal Scheduling, Two-Phase Gated Dispatch Protocol, Dual-Destination Logging, and Phase 11 Analytical Interpretation Engine.
     - Embedded the full Dashboard Screenshot Gallery with individual narrative descriptions explaining the UI layout, metrics, charts, and operational controls for each page.
     - Maintained all technical guides in `docs/` with unnumbered uppercase filenames (`ARCHITECTURE.md`, `DATA_FLOW.md`, `USER_GUIDE.md`, `TESTING_GUIDE.md`, `SCREENSHOT_GUIDE.md`, etc.).
   - Executed full test suite regression:

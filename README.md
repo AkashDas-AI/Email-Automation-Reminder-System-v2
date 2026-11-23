@@ -14,7 +14,7 @@ Project Lead and Reviewer: ChatGPT
 [![Pytest](https://img.shields.io/badge/Pytest-129%20Passed-brightgreen?style=flat-square&logo=pytest&logoColor=white)](tests/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
 [![Platform: Windows](https://img.shields.io/badge/Platform-Windows-0078D6?style=flat-square&logo=windows&logoColor=white)](https://www.microsoft.com/windows)
-[![Mode: Dry-Run Supported](https://img.shields.io/badge/Mode-Dry--Run%20Supported-orange?style=flat-square)](#19-privacy-security-and-ethical-safeguards)
+[![Mode: Dry-Run Supported](https://img.shields.io/badge/Mode-Dry--Run%20Supported-orange?style=flat-square)](#24-privacy-security-and-ethical-safeguards)
 
 ---
 
@@ -26,24 +26,29 @@ Project Lead and Reviewer: ChatGPT
 4. [Technology Stack](#4-technology-stack)
 5. [System Architecture](#5-system-architecture)
 6. [Data Workflow and Processing Pipeline](#6-data-workflow-and-processing-pipeline)
-7. [Synthetic and Benchmark Dataset Description](#7-synthetic-and-benchmark-dataset-description)
-8. [Streamlit Operations Dashboard](#8-streamlit-operations-dashboard)
-9. [Dashboard Screenshot Gallery](#9-dashboard-screenshot-gallery)
-10. [Operational CSV and Tabular Report Generation](#10-operational-csv-and-tabular-report-generation)
-11. [Project Directory Structure](#11-project-directory-structure)
-12. [Virtual Environment Setup and Installation](#12-virtual-environment-setup-and-installation)
-13. [Dependency Installation](#13-dependency-installation)
-14. [Environment Configuration](#14-environment-configuration)
-15. [Database Initialization and CLI Execution](#15-database-initialization-and-cli-execution)
-16. [Launching the Streamlit Dashboard](#16-launching-the-streamlit-dashboard)
-17. [Running Automated Tests and Quality Assurance](#17-running-automated-tests-and-quality-assurance)
-18. [Example Operational Workflow](#18-example-operational-workflow)
-19. [Privacy, Security, and Ethical Safeguards](#19-privacy-security-and-ethical-safeguards)
-20. [Limitations](#20-limitations)
-21. [Future Improvements](#21-future-improvements)
-22. [Contribution Guidelines](#22-contribution-guidelines)
-23. [License and Author Information](#23-license-and-author-information)
-24. [Technical Documentation Index](#24-technical-documentation-index)
+7. [Email Template Architecture and Personalization Engine](#7-email-template-architecture-and-personalization-engine)
+8. [Temporal Scheduling and Due-Date Evaluation](#8-temporal-scheduling-and-due-date-evaluation)
+9. [Two-Phase Gated Dispatch and Transport Protocol](#9-two-phase-gated-dispatch-and-transport-protocol)
+10. [Dual-Destination Logging and Audit Trail](#10-dual-destination-logging-and-audit-trail)
+11. [Insights and Analytical Interpretation Engine](#11-insights-and-analytical-interpretation-engine)
+12. [Synthetic and Benchmark Dataset Description](#12-synthetic-and-benchmark-dataset-description)
+13. [Streamlit Operations Dashboard](#13-streamlit-operations-dashboard)
+14. [Dashboard Screenshot Gallery](#14-dashboard-screenshot-gallery)
+15. [Operational CSV and Tabular Report Generation](#15-operational-csv-and-tabular-report-generation)
+16. [Project Directory Structure](#16-project-directory-structure)
+17. [Virtual Environment Setup and Installation](#17-virtual-environment-setup-and-installation)
+18. [Dependency Installation](#18-dependency-installation)
+19. [Environment Configuration](#19-environment-configuration)
+20. [Database Initialization and CLI Execution](#20-database-initialization-and-cli-execution)
+21. [Launching the Streamlit Dashboard](#21-launching-the-streamlit-dashboard)
+22. [Running Automated Tests and Quality Assurance](#22-running-automated-tests-and-quality-assurance)
+23. [Example Operational Workflow](#23-example-operational-workflow)
+24. [Privacy, Security, and Ethical Safeguards](#24-privacy-security-and-ethical-safeguards)
+25. [Limitations](#25-limitations)
+26. [Future Improvements](#26-future-improvements)
+27. [Contribution Guidelines](#27-contribution-guidelines)
+28. [License and Author Information](#28-license-and-author-information)
+29. [Technical Documentation Index](#29-technical-documentation-index)
 
 ---
 
@@ -214,7 +219,7 @@ SELECT * FROM reminders WHERE status = 'pending' AND datetime(due_date) <= datet
 Records whose scheduled deadline is in the future remain safely in the pending state.
 
 ### Stage 3: Template Personalization and Rendering
-The PersonalizationEngine retrieves the designated text and HTML templates from `templates/email_templates/`. It maps contact attributes (name, company, department) and reminder metadata (task name, due date, priority) to template placeholders (`{name}`, `{task_name}`, `{due_date}`, `{priority}`, `{company}`). If any required placeholder is missing, a MissingPlaceholderError is raised, preventing malformed email generation. Successfully rendered reminders advance to the ready state.
+The PersonalizationEngine retrieves the designated text and HTML templates from `templates/email_templates/`. It maps contact attributes (name, company, department) and reminder metadata (task name, due date, priority) to template placeholders. If any required placeholder is missing, a MissingPlaceholderError is raised, preventing malformed email generation. Successfully rendered reminders advance to the ready state.
 
 ### Stage 4: Two-Phase Gated Dispatch
 To ensure idempotency in concurrent environments:
@@ -230,7 +235,115 @@ Every dispatch event triggers dual audit records: a human-readable entry in `log
 
 ---
 
-## 7. Synthetic and Benchmark Dataset Description
+## 7. Email Template Architecture and Personalization Engine
+
+The templating subsystem (`src/email_automation/personalization.py`) provides deterministic, type-safe, and personalizable message construction:
+
+### Dual Format Storage
+Templates are stored as paired plain-text (`.txt`) and rich hypertext (`.html`) files in `templates/email_templates/`:
+- `meeting_reminder`: Operational synchronization meetings, agenda reviews, and scheduled calls.
+- `payment_reminder`: Pending corporate invoices, billing notices, and accounts receivable alerts.
+- `deadline_reminder`: Action-required project milestones, audit submissions, and compliance deadlines.
+- `follow_up_reminder`: Status inquiries, pending deliverables, and unacknowledged threads.
+- `general_reminder`: Organizational announcements and administrative notices.
+
+### Placeholder Contracts and Input Sanitization
+The PersonalizationEngine enforces a strict context contract. Each template declares its required variables:
+- Supported Placeholders: `{name}`, `{task_name}`, `{due_date}`, `{priority}`, `{company}`, `{department}`, `{reference_id}`.
+- Deterministic Substitution: In-memory string replacement maps contact metadata directly into message bodies and dynamic subject lines.
+- HTML Escaping: Values merged into HTML templates pass through `html.escape()` to neutralize special characters (`<`, `>`, `&`, `"`, `'`), preventing cross-site scripting (XSS) and MIME boundary distortion.
+- Contract Integrity: If any mandatory placeholder cannot be resolved from the contact or reminder record, the engine raises a `MissingPlaceholderError`. The reminder remains unrendered rather than emitting an incomplete message with bare `{placeholder}` tokens.
+
+---
+
+## 8. Temporal Scheduling and Due-Date Evaluation
+
+The scheduling engine (`src/email_automation/scheduler.py` and `src/email_automation/reminder_service.py`) coordinates autonomous timeline execution:
+
+### Polling Loop and Timezone Awareness
+- Independent Polling: The background scheduler evaluates the database at regular configurable intervals (e.g., 60 seconds) independently of the dashboard session.
+- ISO 8601 Parsing: Scheduled timestamps are normalized into standard ISO 8601 format with timezone offsets. The SQL engine compares deadlines using UTC normalized timestamps:
+  ```sql
+  SELECT reminder_id FROM reminders 
+  WHERE status = 'pending' AND datetime(due_date) <= datetime('now');
+  ```
+- State Transition Boundary: When a pending task matures, the service loads contact data, triggers the PersonalizationEngine, renders the message, and updates the status to `ready` within an atomic database transaction.
+
+### Concurrency and Deduplication Safeguards
+- Duplicate Suppression: The engine checks existing active records before registering reminders, preventing duplicate tasks for the same contact, category, and scheduled timestamp.
+- Atomic Rollback: If an error occurs during template rendering or database commit, the transaction rolls back cleanly, leaving the reminder in `pending` status without corrupting adjacent queue entries.
+
+---
+
+## 9. Two-Phase Gated Dispatch and Transport Protocol
+
+The transport subsystem (`src/email_automation/mailer.py`) implements a secure two-phase dispatch protocol designed for high-concurrency environments:
+
+### The Two-Phase Gated Claim Architecture
+1. Phase 1 (Atomic Claim):
+   ```sql
+   UPDATE reminders 
+   SET status = 'processing', updated_at = CURRENT_TIMESTAMP 
+   WHERE reminder_id = :id AND status = 'ready';
+   ```
+   By locking the record into `processing` before opening transport connections, parallel worker threads or simultaneous UI clicks cannot double-dispatch the same message.
+2. Phase 2 (Gated Transport):
+   - Simulation Gate (`DRY_RUN=True`): Constructs a complete `MIMEMultipart` email with alternative text and HTML parts. Instead of opening sockets, the payload is directed to an internal simulation sink, verified, and committed as `simulated`.
+   - Production Gate (`DRY_RUN=False`): Verifies that recipient addresses exist on `ALLOWED_RECIPIENTS`. Connects to `smtp.gmail.com:587`, initiates STARTTLS encryption, authenticates with `SMTP_APP_PASSWORD`, and transmits the message. Upon receiving server response code `250 OK`, the status transitions to `sent`.
+
+### Exception Classification and Ambiguous Handling
+- Transient Network Failures: Connection timeouts (`socket.timeout`) or server busy codes (`421`) increment `retry_count`. If below `MAX_RETRIES` (default 3), the status resets to `ready` for the next cycle. If exceeded, it transitions to `failed`.
+- Authentication Failures: Immediate rejection (`535 Authentication credentials invalid`) halts the batch run and records an alert to prevent account lockouts.
+- Conservative Ambiguity Isolation (`delivery_unknown`): If a socket connection drops after the `DATA` command is sent but before the server response code is acknowledged, the transaction is marked as `delivery_unknown`. Crucially, automated retries are permanently forbidden for `delivery_unknown` records to prevent duplicate recipient deliveries. These cases are flagged for manual operator review.
+
+---
+
+## 10. Dual-Destination Logging and Audit Trail
+
+The auditing architecture (`src/email_automation/logger.py`) maintains parallel audit records across two distinct destinations:
+
+### 1. Rotating Filesystem Logger
+- Log Destination: `logs/email_automation.log`.
+- Log Rotation: Uses a standard rotating file handler configured with a 5 MB file size threshold and a backup count of 5 archive files, preventing disk saturation.
+- Formatting: Standardized format containing timestamp, severity level, module name, and event message:
+  ```text
+  2026-11-23 20:30:15 [INFO] mailer: SIMULATED dispatch for REM001 to aarav.sharma@example.com (Subject: Meeting Reminder: Sync session)
+  ```
+
+### 2. Relational SQLite Activity Table
+- Table: `activity_logs` (`log_id`, `timestamp`, `event_type`, `severity`, `reminder_id`, `contact_id`, `status`, `message`, `details`).
+- Schema Migrations: A linear migration engine supports automatic schema upgrades (Version 1 through Version 9), ensuring legacy schemas upgrade safely without data loss.
+- Fail-Soft Design: If database logging fails due to a transient file lock, filesystem logging continues unimpeded.
+- Credential Redaction: All authentication tokens, passwords, and sensitive keys are stripped and masked prior to emission.
+
+---
+
+## 11. Insights and Analytical Interpretation Engine
+
+The Phase 11 analytical interpretation engine (`src/email_automation/insights.py`) evaluates operational metrics and produces dynamic diagnostic observations:
+
+### Standardized Delivery Success Metric
+To prevent ambiguous calculations, operational success is evaluated strictly against attempted dispatches:
+$$\text{Delivery Success Rate} = \frac{\text{Simulated} + \text{Sent}}{\text{Total Attempted}} \times 100\%$$
+- Total Attempted: Calculated as $\text{Simulated} + \text{Sent} + \text{Failed}$.
+- Excluded States: Reminders in `pending`, `ready`, and `processing` states are excluded from the denominator.
+- Ambiguous Handling: Records in `delivery_unknown` are tracked in a dedicated audit counter and excluded from the success denominator.
+- Zero-Division Protection: If zero dispatches have been attempted, the engine safely returns `"N/A"` rather than raising an arithmetic error.
+
+### Strict Actionable Upcoming Workload Filtering
+Upcoming workload calculation separates active future requirements from historical past-due records:
+- Actionable Upcoming Criteria: Reminders where scheduled deadline is in the future ($T_{\text{due}} > \text{now}$) AND status is strictly in `('pending', 'ready')`.
+- Excluded Completed Records: Finished terminal records (`simulated`, `sent`, `failed`, `delivery_unknown`) with future timestamps are excluded, preventing completed tasks from inflating upcoming operational demands.
+
+### Dynamic Workload and Department Rankings
+The engine dynamically computes workload density across corporate departments and functional categories:
+- Lead-Time Horizons: Reminders are bucketed into Past-Due, Due Today, Due Tomorrow, Next 7 Days, and Future (>7 Days).
+- Department Concentration: Identifies which departments (e.g., Engineering vs Marketing) hold the largest share of active reminders.
+- Automated Narrative Findings: Generates structured findings cards (Normal, Info, Alert) summarizing delivery reliability, workload peaks, and actionable workload balancing recommendations.
+
+---
+
+## 12. Synthetic and Benchmark Dataset Description
 
 The project is supplied with a comprehensive synthetic benchmark dataset located in `data/sample/`:
 
@@ -248,7 +361,7 @@ Contains 24 structured operational tasks linked via foreign keys to the contact 
 
 ---
 
-## 8. Streamlit Operations Dashboard
+## 13. Streamlit Operations Dashboard
 
 The dashboard provides an intuitive, high-contrast operational graphical interface built on Streamlit:
 
@@ -268,7 +381,7 @@ The dashboard provides an intuitive, high-contrast operational graphical interfa
 
 ---
 
-## 9. Dashboard Screenshot Gallery
+## 14. Dashboard Screenshot Gallery
 
 All high-resolution reference screenshots are located in `images/dashboard/`:
 
@@ -321,7 +434,7 @@ The Settings & Diagnostics page provides deep visibility into application config
 
 ---
 
-## 10. Operational CSV and Tabular Report Generation
+## 15. Operational CSV and Tabular Report Generation
 
 The reporting subsystem (`src/email_automation/report_generator.py`) generates certified, audit-ready data exports in tabular CSV format compatible with Microsoft Excel, Google Sheets, and automated analytical pipelines:
 
@@ -332,7 +445,7 @@ The reporting subsystem (`src/email_automation/report_generator.py`) generates c
 
 ---
 
-## 11. Project Directory Structure
+## 16. Project Directory Structure
 
 ```
 email-automation-reminder-system/
@@ -454,7 +567,7 @@ email-automation-reminder-system/
 
 ---
 
-## 12. Virtual Environment Setup and Installation
+## 17. Virtual Environment Setup and Installation
 
 The application is engineered for Python 3.11 on Windows 10/11 using PowerShell:
 
@@ -482,7 +595,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
 
 ---
 
-## 13. Dependency Installation
+## 18. Dependency Installation
 
 Upgrade pip and install all pinned production dependencies:
 
@@ -493,7 +606,7 @@ Upgrade pip and install all pinned production dependencies:
 
 ---
 
-## 14. Environment Configuration
+## 19. Environment Configuration
 
 Copy the provided `.env.example` file to create your local `.env`:
 
@@ -527,7 +640,7 @@ Copy-Item .env.example .env
 
 ---
 
-## 15. Database Initialization and CLI Execution
+## 20. Database Initialization and CLI Execution
 
 Initialize the database schema and populate the benchmark dataset:
 
@@ -544,7 +657,7 @@ Initialize the database schema and populate the benchmark dataset:
 
 ---
 
-## 16. Launching the Streamlit Dashboard
+## 21. Launching the Streamlit Dashboard
 
 Start the interactive permanent Dark Mode dashboard:
 
@@ -563,7 +676,7 @@ Open your browser to:
 
 ---
 
-## 17. Running Automated Tests and Quality Assurance
+## 22. Running Automated Tests and Quality Assurance
 
 Execute the complete automated test suite with pytest:
 
@@ -599,7 +712,7 @@ tests/test_scheduling.py .....................                           [100%]
 
 ---
 
-## 18. Example Operational Workflow
+## 23. Example Operational Workflow
 
 1. Schedule Creation: An administrator registers a task reminder for contact CON001 (Aarav Sharma) titled "Quarterly Code Audit Review", due at 10:00 AM, using the `meeting_reminder` template.
 2. Background Polling: The scheduler checks SQLite every 60 seconds. When system time reaches the deadline, the reminder qualifications pass.
@@ -610,7 +723,7 @@ tests/test_scheduling.py .....................                           [100%]
 
 ---
 
-## 19. Privacy, Security, and Ethical Safeguards
+## 24. Privacy, Security, and Ethical Safeguards
 
 - Default Simulation Enforcement: `DRY_RUN` defaults to `True` in `src/email_automation/config.py`. Even if credentials are configured, no live email can be dispatched unless `DRY_RUN=False` is explicitly set in `.env`.
 - Recipient Allowlisting: When running in live mode, outgoing emails are strictly matched against `ALLOWED_RECIPIENTS`. Addresses not on the list are blocked from dispatch.
@@ -621,7 +734,7 @@ tests/test_scheduling.py .....................                           [100%]
 
 ---
 
-## 20. Limitations
+## 25. Limitations
 
 - Single-Node Persistence: SQLite WAL mode provides high performance for local single-node deployments, but distributed multi-instance clusters would require PostgreSQL.
 - Fictional Benchmark Data: The seeded 20 contacts and 24 reminders are designed for reproducible demonstration rather than stress testing at million-record scales.
@@ -629,7 +742,7 @@ tests/test_scheduling.py .....................                           [100%]
 
 ---
 
-## 21. Future Improvements
+## 26. Future Improvements
 
 - OAuth2 Gmail API Transport: Integrate Google Workspace OAuth2 token refresh as an alternative to SMTP App Passwords.
 - Distributed Celery Task Queue: Enable Redis-backed task distribution for high-throughput enterprise dispatch pipelines.
@@ -637,13 +750,13 @@ tests/test_scheduling.py .....................                           [100%]
 
 ---
 
-## 22. Contribution Guidelines
+## 27. Contribution Guidelines
 
 Contributions are welcome. Please review [CONTRIBUTING.md](CONTRIBUTING.md) for details on our coding standards, branch conventions, and testing protocols. All pull requests must pass the complete 129-test suite (`pytest tests/ -v`) before review.
 
 ---
 
-## 23. License and Author Information
+## 28. License and Author Information
 
 Author: Akash Das  
 Role: System Architect and Developer  
@@ -651,7 +764,7 @@ License: MIT License. See [LICENSE](LICENSE) for full legal text.
 
 ---
 
-## 24. Technical Documentation Index
+## 29. Technical Documentation Index
 
 For in-depth architectural and module specifications, consult the dedicated guides in `docs/`:
 
