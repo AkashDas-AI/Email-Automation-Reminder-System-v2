@@ -14,7 +14,7 @@
 - **Python**: Version 3.11 or higher
 - **Operating System**: Windows 10/11, Linux, or macOS
 - **Environment**: Virtual environment (`.venv`) recommended
-- **Dependencies**: Listed in `requirements.txt` (Streamlit, Pandas, Plotly, python-dotenv, pytest)
+- **Dependencies**: Listed in `requirements.txt` (Streamlit, Pandas, Plotly, python-dotenv) and `requirements-dev.txt` (pytest)
 
 ### 1.2 Environment Setup
 1. Open terminal in the project root directory.

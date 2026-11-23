@@ -483,6 +483,7 @@ email-automation-reminder-system-v2/
 |-- README.md
 |-- pytest.ini
 |-- requirements.txt
+|-- requirements-dev.txt
 |-- main.py
 |-- run_dashboard.py
 |-- .streamlit/
@@ -624,11 +625,17 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
 
 ## 19. Dependency Installation
 
-Upgrade pip and install all pinned production dependencies:
+Upgrade pip and install pinned production dependencies:
 
 ```powershell
+# Upgrade pip to latest version
 .\.venv\Scripts\python.exe -m pip install --upgrade pip
+
+# Install production runtime dependencies
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
+
+# (Optional) Install development and testing dependencies
+.\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
 ```
 
 ---
@@ -714,6 +721,10 @@ Open your browser to:
 Execute the complete automated test suite with pytest:
 
 ```powershell
+# Ensure testing dependencies are installed
+.\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
+
+# Run the full test suite
 .\.venv\Scripts\python.exe -m pytest tests/ -v
 ```
 

@@ -68,7 +68,8 @@ Email Automation & Reminder System/
 ├── .vscode/settings.json            # Workspace interpreter configuration
 ├── main.py                          # CLI application entry point
 ├── run_dashboard.py                 # Streamlit application launcher
-├── requirements.txt                 # Pinned dependencies
+├── requirements.txt                 # Production runtime dependencies
+├── requirements-dev.txt             # Development and testing dependencies
 ├── README.md                        # Root project overview
 ├── CONTRIBUTING.md                  # Development guidelines
 ├── LICENSE                          # Project license
