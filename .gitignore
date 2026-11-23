@@ -1,0 +1,117 @@
+# ==============================================================================
+# Python Virtual Environments
+# ==============================================================================
+.venv/
+venv/
+ENV/
+env/
+*/.venv/
+*/venv/
+
+# ==============================================================================
+# Environment Variables & Secrets
+# ==============================================================================
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.cert
+*.pfx
+.streamlit/secrets.toml
+
+# ==============================================================================
+# Python Cache & Bytecode Artifacts
+# ==============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# ==============================================================================
+# Testing, Coverage & Type Checking
+# ==============================================================================
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# ==============================================================================
+# Databases, WAL & Journal Files
+# ==============================================================================
+*.db
+*.sqlite
+*.sqlite3
+*.db-wal
+*.db-shm
+*.db-journal
+*-wal
+*-shm
+*-journal
+data/database/*.db
+data/database/*.db-wal
+data/database/*.db-shm
+!data/database/.gitkeep
+
+# ==============================================================================
+# Runtime Logs & Generated Reports
+# ==============================================================================
+logs/*.log
+!logs/.gitkeep
+outputs/reports/*.csv
+!outputs/reports/.gitkeep
+outputs/exports/*
+!outputs/exports/.gitkeep
+
+# ==============================================================================
+# Operating System & Editor Temporary Files
+# ==============================================================================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*.tmp
+*.bak
+*.swp
+*~
+scratch/
+
+# ==============================================================================
+# Personal Interview Preparation & Study Notes (Local only, excluded from GitHub)
+# ==============================================================================
+docs/INTERVIEW_PREPARATION_GUIDE.md
+docs/TECHNICAL_QA_GUIDE.md
+
+# ==============================================================================
+# Explicit Allowlist for Project Assets & Required Directories
+# ==============================================================================
+!docs/
+!docs/screenshots/
+!docs/screenshots/*.png
+!docs/screenshots/.gitkeep
+!images/
+!images/architecture/.gitkeep
+!images/dashboard/.gitkeep
+!templates/
+!tests/
+!data/sample/
+!data/sample/*.csv
+!data/sample/.gitkeep
