@@ -77,20 +77,21 @@ Intended users include operations managers, department administrators, customer 
 This repository represents the second major generation (v2.0) of the Email Automation & Reminder System. The original foundation was developed and published at:
 [https://github.com/AkashDas-AI/Email-Automation-Reminder-System](https://github.com/AkashDas-AI/Email-Automation-Reminder-System)
 
-While the v1.0 implementation demonstrated a functional script-based prototype for scheduled reminders, v2.0 represents a comprehensive architectural overhaul designed for enterprise reliability, high-concurrency datastore access, exhaustive verification, and deep analytical interpretation.
+While the v1.0 implementation established the foundational concept of automated email scheduling and dark-themed operational monitoring, v2.0 represents a comprehensive architectural evolution designed for enterprise reliability, high-concurrency datastore access, exhaustive verification, and deep analytical interpretation.
 
 ### Comparative Technical Matrix
 
 | Architectural Dimension | Original Implementation (v1.0) | Enhanced Implementation (v2.0) |
 | :--- | :--- | :--- |
 | System Architecture | Script-driven pipeline with sequential helper scripts | Decoupled multi-tier domain service architecture (ReminderService, EmailService, PersonalizationEngine, InterpretationEngine, DatabaseManager) |
-| User Interface | Single-page Streamlit script with basic default styling | 7-page permanent Dark Mode dashboard (#0F172A slate background, #1E293B containers, #38BDF8 accents), responsive tables, and interactive drill-downs |
-| Table Rendering Stability | Standard dataframe rendering susceptible to height errors | Sanitized height calculation helper permanently eliminating StreamlitInvalidHeightError exceptions |
+| User Interface | Single-page Streamlit application with custom dark dashboard styling and embedded metric cards | Multi-page architecture with 7 dedicated views in permanent Dark Mode (#0F172A slate theme), persistent navigation, and interactive drill-downs |
+| Table Rendering Stability | Standard dataframe container rendering using default viewport dimensions | Sanitized dynamic height calculation helper with bounded constraints to prevent layout overflow exceptions |
 | Relational Storage | Basic SQLite in default rollback journal mode | SQLite in Write-Ahead Logging (WAL) mode with 5000ms busy timeout, foreign key enforcement, and automated v1 to v9 schema migrations |
 | Dispatch State Machine | Binary dry-run boolean toggle without transactional claiming | Two-Phase Gated Dispatch (ready to processing to simulated or sent), atomic claim locking, and conservative ambiguity handling (delivery_unknown) |
 | Operational Analytics | Static CSV exports and basic metric summaries | Phase 11 Analytical Interpretation Engine with dynamic department rankings, lead-time buckets, and automated narrative findings |
 | Quality Assurance | No automated test suite (0 unit tests) | 129 passing automated unit and integration tests across 6 dedicated test modules with 100 percent pass rate |
 | Transport Security | Standard password variables in environment file | 16-character Google App Passwords, credential masking in logs/tracebacks, and recipient allowlisting |
+| Visual Dashboard Assets | Single overview screenshot (outputs/screenshots/dashboard_overview.png) | 7 high-resolution screenshots covering each dedicated operational view (images/dashboard/*.png) |
 | Documentation | Single 306-line README | 30-section master README (0 emojis, 0 em dashes) + 14 dedicated architectural and operational specification guides in docs/ |
 
 ---
