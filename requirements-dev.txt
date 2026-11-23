@@ -1,0 +1,9 @@
+# Email Automation & Reminder System v2.0 - Development & Testing Dependencies
+# Author: Akash Das
+# Repository: https://github.com/AkashDas-AI/Email-Automation-Reminder-System-v2
+
+# Inherit Core Runtime Dependencies
+-r requirements.txt
+
+# Testing & Quality Assurance
+pytest==9.2.0          # Automated unit, integration, and regression testing framework
