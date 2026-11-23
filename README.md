@@ -2,12 +2,12 @@
 
 Author: Akash Das  
 Role: System Architect and Developer  
-Project Repository: email-automation-reminder-system-v2  
+Project Repository: Email-Automation-Reminder-System-v2  
 Previous Version: [https://github.com/AkashDas-AI/Email-Automation-Reminder-System](https://github.com/AkashDas-AI/Email-Automation-Reminder-System)  
 Development Environment: Antigravity IDE (VS Code-based)  
 Project Lead and Reviewer: ChatGPT  
 
-[![Version: 2.0](https://img.shields.io/badge/Version-2.0%20(Enhanced)-7C3AED?style=flat-square)](https://github.com/AkashDas-AI/Email-Automation-Reminder-System)
+[![Version: 2.0](https://img.shields.io/badge/Version-2.0%20(Enhanced)-7C3AED?style=flat-square)](https://github.com/AkashDas-AI/Email-Automation-Reminder-System-v2)
 [![Python](https://img.shields.io/badge/Python-3.11.0-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.67.0-FF4B4B?style=flat-square&logo=streamlit&logoColor=white)](https://streamlit.io/)
 [![Pandas](https://img.shields.io/badge/Pandas-3.1.1-150458?style=flat-square&logo=pandas&logoColor=white)](https://pandas.pydata.org/)
@@ -253,7 +253,7 @@ To ensure idempotency in concurrent environments:
 1. Claim Phase: The mailer atomically updates the status from `ready` to `processing`.
 2. Gated Transport:
    - If `DRY_RUN=True`: The MIME message is verified and routed to an internal simulation sink, transitioning the status to `simulated`.
-   - If `DRY_RUN=False`: The mailer verifies the recipient against `ALLOWED_RECIPIENTS`, establishes a STARTTLS connection with `smtp.gmail.com:587`, authenticates with the Google App Password, and sends the message. Upon receiving a `250 OK` server acknowledgment, the status transitions to `sent`.
+   - If `DRY_RUN=False`: The mailer verifies the recipient against `SMTP_ALLOWED_RECIPIENTS`, establishes a STARTTLS connection with `smtp.gmail.com:587`, authenticates with the Google App Password, and sends the message. Upon receiving a `250 OK` server acknowledgment, the status transitions to `sent`.
    - In case of network errors or authentication failures, the reminder increments its retry counter and transitions to `failed`.
    - If a connection drops after the `DATA` phase, the reminder transitions to `delivery_unknown` to prevent double-sending.
 
@@ -316,7 +316,7 @@ The transport subsystem (`src/email_automation/mailer.py`) implements a secure t
    By locking the record into `processing` before opening transport connections, parallel worker threads or simultaneous UI clicks cannot double-dispatch the same message.
 2. Phase 2 (Gated Transport):
    - Simulation Gate (`DRY_RUN=True`): Constructs a complete `MIMEMultipart` email with alternative text and HTML parts. Instead of opening sockets, the payload is directed to an internal simulation sink, verified, and committed as `simulated`.
-   - Production Gate (`DRY_RUN=False`): Verifies that recipient addresses exist on `ALLOWED_RECIPIENTS`. Connects to `smtp.gmail.com:587`, initiates STARTTLS encryption, authenticates with `SMTP_APP_PASSWORD`, and transmits the message. Upon receiving server response code `250 OK`, the status transitions to `sent`.
+   - Production Gate (`DRY_RUN=False`): Verifies that recipient addresses exist on `SMTP_ALLOWED_RECIPIENTS`. Connects to `smtp.gmail.com:587`, initiates STARTTLS encryption, authenticates with `SMTP_PASSWORD`, and transmits the message. Upon receiving server response code `250 OK`, the status transitions to `sent`.
 
 ### Exception Classification and Ambiguous Handling
 - Transient Network Failures: Connection timeouts (`socket.timeout`) or server busy codes (`421`) increment `retry_count`. If below `MAX_RETRIES` (default 3), the status resets to `ready` for the next cycle. If exceeded, it transitions to `failed`.
@@ -600,8 +600,8 @@ The application is engineered for Python 3.11 on Windows 10/11 using PowerShell:
 
 ### Step 1: Clone Repository
 ```powershell
-git clone https://github.com/Risdane/email-automation-reminder-system-v2.git
-cd "email-automation-reminder-system-v2"
+git clone https://github.com/AkashDas-AI/Email-Automation-Reminder-System-v2.git
+cd "Email-Automation-Reminder-System-v2"
 ```
 
 ### Step 2: Open in VS Code
@@ -643,17 +643,22 @@ Copy-Item .env.example .env
 
 ### Environment Variables Reference
 
+The application loads environment variables via `src/email_automation/config.py`. All variables directly mirror the committed `.env.example` configuration template:
+
 | Variable Name | Data Type | Default Value | Purpose and Description |
 | :--- | :--- | :--- | :--- |
-| DRY_RUN | Boolean | True | Operational safety switch. When True, all sending is simulated. |
-| DATABASE_PATH | Path | data/database/reminders.db | Local filesystem path to the SQLite datastore. |
-| TEMPLATES_DIR | Path | templates/email_templates | Path to directory containing text and HTML templates. |
-| LOG_FILE | Path | logs/email_automation.log | Destination path for rotating system logs. |
-| SMTP_HOST | String | smtp.gmail.com | Remote SMTP server host. |
+| DRY_RUN | Boolean | true | Operational safety switch. When true, all sending is simulated locally without opening network sockets. |
+| SMTP_HOST | String | smtp.gmail.com | Remote SMTP server hostname. |
 | SMTP_PORT | Integer | 587 | Remote SMTP server port (587 for STARTTLS). |
-| SMTP_SENDER_EMAIL | String | empty | Authorized sender Gmail address. |
-| SMTP_APP_PASSWORD | String | empty | 16-character Google App Password (never personal password). |
-| ALLOWED_RECIPIENTS | String | empty | Comma-separated list of authorized recipient emails in live mode. |
+| SMTP_USERNAME | String | empty | Sender Gmail address used for SMTP authentication. |
+| SMTP_PASSWORD | String | empty | 16-character Google App Password (never personal account password). |
+| SMTP_ALLOWED_RECIPIENTS | String | empty | Comma-separated list of authorized recipient emails in live mode. |
+| EMAIL_FROM | String | empty | Sender email address displayed in the outgoing MIME From header. |
+| EMAIL_FROM_NAME | String | Email Automation Reminder System | Sender display name formatted alongside the sender email address. |
+| TIMEZONE | String | UTC | Standard IANA timezone string for reminder scheduling evaluations. |
+| LOG_LEVEL | String | INFO | Application logging severity threshold (DEBUG, INFO, WARNING, ERROR). |
+| LOG_FILE | Path | logs/email_automation.log | Destination path for rotating system logs. |
+| REPORTS_DIR | Path | outputs/reports | Output directory path for generated CSV reports and data exports. |
 
 ### Gmail SMTP Setup Instructions
 1. Navigate to Google Account Security.
@@ -661,9 +666,10 @@ Copy-Item .env.example .env
 3. Search for App Passwords.
 4. Create an App Password with the name `EmailAutomationSystem`.
 5. Google generates a 16-character passcode (e.g., `abcd efgh ijkl mnop`).
-6. Set `SMTP_APP_PASSWORD=abcdefghijklmnop` in your local `.env`.
-7. Configure `SMTP_SENDER_EMAIL=your_email@gmail.com`.
-8. Never commit `.env` to Git; it is strictly excluded by `.gitignore`.
+6. Set `SMTP_PASSWORD=abcdefghijklmnop` in your local `.env`.
+7. Configure `SMTP_USERNAME=your_email@gmail.com` and `EMAIL_FROM=your_email@gmail.com`.
+8. When live dispatch is authorized, set `DRY_RUN=false` and declare authorized destinations in `SMTP_ALLOWED_RECIPIENTS=recipient@example.com`.
+9. Never commit `.env` to Git; it is strictly excluded by `.gitignore`.
 
 ---
 
@@ -753,7 +759,7 @@ tests/test_scheduling.py .....................                           [100%]
 ## 25. Privacy, Security, and Ethical Safeguards
 
 - Default Simulation Enforcement: `DRY_RUN` defaults to `True` in `src/email_automation/config.py`. Even if credentials are configured, no live email can be dispatched unless `DRY_RUN=False` is explicitly set in `.env`.
-- Recipient Allowlisting: When running in live mode, outgoing emails are strictly matched against `ALLOWED_RECIPIENTS`. Addresses not on the list are blocked from dispatch.
+- Recipient Allowlisting: When running in live mode, outgoing emails are strictly matched against `SMTP_ALLOWED_RECIPIENTS`. Addresses not on the list are blocked from dispatch.
 - Credential Isolation: Sensitive files (`.env`, `.streamlit/secrets.toml`) and database files are strictly excluded from version control via `.gitignore`.
 - Password Masking: `AppConfig` masks passwords in string representations and logs, preventing credential leakage in tracebacks.
 - Conservative Failure Handling: If a connection drops after the `DATA` phase, the record transitions to `delivery_unknown` and is never automatically retried, avoiding duplicate email reception by recipients.
