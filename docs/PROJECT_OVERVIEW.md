@@ -1,7 +1,9 @@
 # Project Overview
 
-**Project Name:** Email Automation & Reminder System  
+**Project Name:** Email Automation & Reminder System v2.0  
 **Project Author:** Akash Das  
+**Version:** 2.0 (Enhanced Enterprise Edition)  
+**Previous Version Repository:** https://github.com/AkashDas-AI/Email-Automation-Reminder-System  
 **Development Environment:** Antigravity IDE (VS Code-based)  
 **Project Lead, Reviewer & Validator:** ChatGPT  
 **AI Development Agent:** Antigravity Senior Developer  

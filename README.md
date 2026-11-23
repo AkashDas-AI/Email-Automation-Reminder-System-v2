@@ -1,11 +1,13 @@
-# Email Automation & Reminder System
+# Email Automation & Reminder System v2.0
 
 Author: Akash Das  
 Role: System Architect and Developer  
-Project Repository: email-automation-reminder-system  
+Project Repository: email-automation-reminder-system-v2  
+Previous Version: [https://github.com/AkashDas-AI/Email-Automation-Reminder-System](https://github.com/AkashDas-AI/Email-Automation-Reminder-System)  
 Development Environment: Antigravity IDE (VS Code-based)  
 Project Lead and Reviewer: ChatGPT  
 
+[![Version: 2.0](https://img.shields.io/badge/Version-2.0%20(Enhanced)-7C3AED?style=flat-square)](https://github.com/AkashDas-AI/Email-Automation-Reminder-System)
 [![Python](https://img.shields.io/badge/Python-3.11.0-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.67.0-FF4B4B?style=flat-square&logo=streamlit&logoColor=white)](https://streamlit.io/)
 [![Pandas](https://img.shields.io/badge/Pandas-3.1.1-150458?style=flat-square&logo=pandas&logoColor=white)](https://pandas.pydata.org/)
@@ -14,47 +16,48 @@ Project Lead and Reviewer: ChatGPT
 [![Pytest](https://img.shields.io/badge/Pytest-129%20Passed-brightgreen?style=flat-square&logo=pytest&logoColor=white)](tests/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
 [![Platform: Windows](https://img.shields.io/badge/Platform-Windows-0078D6?style=flat-square&logo=windows&logoColor=white)](https://www.microsoft.com/windows)
-[![Mode: Dry-Run Supported](https://img.shields.io/badge/Mode-Dry--Run%20Supported-orange?style=flat-square)](#24-privacy-security-and-ethical-safeguards)
+[![Mode: Dry-Run Supported](https://img.shields.io/badge/Mode-Dry--Run%20Supported-orange?style=flat-square)](#25-privacy-security-and-ethical-safeguards)
 
 ---
 
 ## Table of Contents
 
 1. [Project Overview](#1-project-overview)
-2. [Project Objectives](#2-project-objectives)
-3. [Key Features](#3-key-features)
-4. [Technology Stack](#4-technology-stack)
-5. [System Architecture](#5-system-architecture)
-6. [Data Workflow and Processing Pipeline](#6-data-workflow-and-processing-pipeline)
-7. [Email Template Architecture and Personalization Engine](#7-email-template-architecture-and-personalization-engine)
-8. [Temporal Scheduling and Due-Date Evaluation](#8-temporal-scheduling-and-due-date-evaluation)
-9. [Two-Phase Gated Dispatch and Transport Protocol](#9-two-phase-gated-dispatch-and-transport-protocol)
-10. [Dual-Destination Logging and Audit Trail](#10-dual-destination-logging-and-audit-trail)
-11. [Insights and Analytical Interpretation Engine](#11-insights-and-analytical-interpretation-engine)
-12. [Synthetic and Benchmark Dataset Description](#12-synthetic-and-benchmark-dataset-description)
-13. [Streamlit Operations Dashboard](#13-streamlit-operations-dashboard)
-14. [Dashboard Screenshot Gallery](#14-dashboard-screenshot-gallery)
-15. [Operational CSV and Tabular Report Generation](#15-operational-csv-and-tabular-report-generation)
-16. [Project Directory Structure](#16-project-directory-structure)
-17. [Virtual Environment Setup and Installation](#17-virtual-environment-setup-and-installation)
-18. [Dependency Installation](#18-dependency-installation)
-19. [Environment Configuration](#19-environment-configuration)
-20. [Database Initialization and CLI Execution](#20-database-initialization-and-cli-execution)
-21. [Launching the Streamlit Dashboard](#21-launching-the-streamlit-dashboard)
-22. [Running Automated Tests and Quality Assurance](#22-running-automated-tests-and-quality-assurance)
-23. [Example Operational Workflow](#23-example-operational-workflow)
-24. [Privacy, Security, and Ethical Safeguards](#24-privacy-security-and-ethical-safeguards)
-25. [Limitations](#25-limitations)
-26. [Future Improvements](#26-future-improvements)
-27. [Contribution Guidelines](#27-contribution-guidelines)
-28. [License and Author Information](#28-license-and-author-information)
-29. [Technical Documentation Index](#29-technical-documentation-index)
+2. [Project Evolution: From v1.0 to v2.0](#2-project-evolution-from-v10-to-v20)
+3. [Project Objectives](#3-project-objectives)
+4. [Key Features](#4-key-features)
+5. [Technology Stack](#5-technology-stack)
+6. [System Architecture](#6-system-architecture)
+7. [Data Workflow and Processing Pipeline](#7-data-workflow-and-processing-pipeline)
+8. [Email Template Architecture and Personalization Engine](#8-email-template-architecture-and-personalization-engine)
+9. [Temporal Scheduling and Due-Date Evaluation](#9-temporal-scheduling-and-due-date-evaluation)
+10. [Two-Phase Gated Dispatch and Transport Protocol](#10-two-phase-gated-dispatch-and-transport-protocol)
+11. [Dual-Destination Logging and Audit Trail](#11-dual-destination-logging-and-audit-trail)
+12. [Insights and Analytical Interpretation Engine](#12-insights-and-analytical-interpretation-engine)
+13. [Synthetic and Benchmark Dataset Description](#13-synthetic-and-benchmark-dataset-description)
+14. [Streamlit Operations Dashboard](#14-streamlit-operations-dashboard)
+15. [Dashboard Screenshot Gallery](#15-dashboard-screenshot-gallery)
+16. [Operational CSV and Tabular Report Generation](#16-operational-csv-and-tabular-report-generation)
+17. [Project Directory Structure](#17-project-directory-structure)
+18. [Virtual Environment Setup and Installation](#18-virtual-environment-setup-and-installation)
+19. [Dependency Installation](#19-dependency-installation)
+20. [Environment Configuration](#20-environment-configuration)
+21. [Database Initialization and CLI Execution](#21-database-initialization-and-cli-execution)
+22. [Launching the Streamlit Dashboard](#22-launching-the-streamlit-dashboard)
+23. [Running Automated Tests and Quality Assurance](#23-running-automated-tests-and-quality-assurance)
+24. [Example Operational Workflow](#24-example-operational-workflow)
+25. [Privacy, Security, and Ethical Safeguards](#25-privacy-security-and-ethical-safeguards)
+26. [Limitations](#26-limitations)
+27. [Future Improvements](#27-future-improvements)
+28. [Contribution Guidelines](#28-contribution-guidelines)
+29. [License and Author Information](#29-license-and-author-information)
+30. [Technical Documentation Index](#30-technical-documentation-index)
 
 ---
 
 ## 1. Project Overview
 
-The Email Automation & Reminder System is an enterprise-grade, modular Python application engineered to solve critical operational challenges in scheduled business communications, client follow-ups, deadline tracking, and compliance auditing.
+The Email Automation & Reminder System v2.0 is an enterprise-grade, modular Python application engineered to solve critical operational challenges in scheduled business communications, client follow-ups, deadline tracking, and compliance auditing.
 
 In many operational environments, task reminders and follow-up notices are dispatched manually or through fragmented scripts. This leads to missed deadlines, unrecorded dispatches, duplicate notifications, and severe security risks such as accidental live transmissions during system testing. 
 
@@ -69,7 +72,30 @@ Intended users include operations managers, department administrators, customer 
 
 ---
 
-## 2. Project Objectives
+## 2. Project Evolution: From v1.0 to v2.0
+
+This repository represents the second major generation (v2.0) of the Email Automation & Reminder System. The original foundation was developed and published at:
+[https://github.com/AkashDas-AI/Email-Automation-Reminder-System](https://github.com/AkashDas-AI/Email-Automation-Reminder-System)
+
+While the v1.0 implementation demonstrated a functional script-based prototype for scheduled reminders, v2.0 represents a comprehensive architectural overhaul designed for enterprise reliability, high-concurrency datastore access, exhaustive verification, and deep analytical interpretation.
+
+### Comparative Technical Matrix
+
+| Architectural Dimension | Original Implementation (v1.0) | Enhanced Implementation (v2.0) |
+| :--- | :--- | :--- |
+| System Architecture | Script-driven pipeline with sequential helper scripts | Decoupled multi-tier domain service architecture (ReminderService, EmailService, PersonalizationEngine, InterpretationEngine, DatabaseManager) |
+| User Interface | Single-page Streamlit script with basic default styling | 7-page permanent Dark Mode dashboard (#0F172A slate background, #1E293B containers, #38BDF8 accents), responsive tables, and interactive drill-downs |
+| Table Rendering Stability | Standard dataframe rendering susceptible to height errors | Sanitized height calculation helper permanently eliminating StreamlitInvalidHeightError exceptions |
+| Relational Storage | Basic SQLite in default rollback journal mode | SQLite in Write-Ahead Logging (WAL) mode with 5000ms busy timeout, foreign key enforcement, and automated v1 to v9 schema migrations |
+| Dispatch State Machine | Binary dry-run boolean toggle without transactional claiming | Two-Phase Gated Dispatch (ready to processing to simulated or sent), atomic claim locking, and conservative ambiguity handling (delivery_unknown) |
+| Operational Analytics | Static CSV exports and basic metric summaries | Phase 11 Analytical Interpretation Engine with dynamic department rankings, lead-time buckets, and automated narrative findings |
+| Quality Assurance | No automated test suite (0 unit tests) | 129 passing automated unit and integration tests across 6 dedicated test modules with 100 percent pass rate |
+| Transport Security | Standard password variables in environment file | 16-character Google App Passwords, credential masking in logs/tracebacks, and recipient allowlisting |
+| Documentation | Single 306-line README | 30-section master README (0 emojis, 0 em dashes) + 14 dedicated architectural and operational specification guides in docs/ |
+
+---
+
+## 3. Project Objectives
 
 - Architectural Separation of Concerns: Decouple the user interface, scheduling engine, templating services, database persistence, and email transport layers into maintainable modules.
 - Absolute Transport Safety: Guarantee that no live email transmission occurs during testing or development unless explicitly authorized via environment variables and recipient allowlisting.
@@ -80,7 +106,7 @@ Intended users include operations managers, department administrators, customer 
 
 ---
 
-## 3. Key Features
+## 4. Key Features
 
 - Contact Directory Management: Ingests, validates, and stores corporate contact records with full department, company, and email format validation (RFC 5322 regex).
 - Structured Reminder Queuing: Manages tasks across four priority tiers (Low, Medium, High, Urgent) and five operational categories (Meeting, Payment, Deadline, Follow-Up, General Notice).
@@ -98,7 +124,7 @@ Intended users include operations managers, department administrators, customer 
 
 ---
 
-## 4. Technology Stack
+## 5. Technology Stack
 
 | Architectural Layer | Technology | Version | Operational Role |
 | :--- | :--- | :--- | :--- |
@@ -115,9 +141,9 @@ Intended users include operations managers, department administrators, customer 
 
 ---
 
-## 5. System Architecture
+## 6. System Architecture
 
-The Email Automation & Reminder System is architected as a multi-tier decoupled system. The presentation layer (Streamlit) interacts exclusively with domain services and the SQLite datastore, while the transport layer is isolated behind a strict safety gate.
+The Email Automation & Reminder System v2.0 is architected as a multi-tier decoupled system. The presentation layer (Streamlit) interacts exclusively with domain services and the SQLite datastore, while the transport layer is isolated behind a strict safety gate.
 
 ```
 +-------------------------------------------------------------------------+
@@ -189,7 +215,7 @@ A reminder progresses through a finite, deterministic set of operational states:
 
 ---
 
-## 6. Data Workflow and Processing Pipeline
+## 7. Data Workflow and Processing Pipeline
 
 The system processes data across five distinct, sequential lifecycle stages:
 
@@ -235,7 +261,7 @@ Every dispatch event triggers dual audit records: a human-readable entry in `log
 
 ---
 
-## 7. Email Template Architecture and Personalization Engine
+## 8. Email Template Architecture and Personalization Engine
 
 The templating subsystem (`src/email_automation/personalization.py`) provides deterministic, type-safe, and personalizable message construction:
 
@@ -256,7 +282,7 @@ The PersonalizationEngine enforces a strict context contract. Each template decl
 
 ---
 
-## 8. Temporal Scheduling and Due-Date Evaluation
+## 9. Temporal Scheduling and Due-Date Evaluation
 
 The scheduling engine (`src/email_automation/scheduler.py` and `src/email_automation/reminder_service.py`) coordinates autonomous timeline execution:
 
@@ -275,7 +301,7 @@ The scheduling engine (`src/email_automation/scheduler.py` and `src/email_automa
 
 ---
 
-## 9. Two-Phase Gated Dispatch and Transport Protocol
+## 10. Two-Phase Gated Dispatch and Transport Protocol
 
 The transport subsystem (`src/email_automation/mailer.py`) implements a secure two-phase dispatch protocol designed for high-concurrency environments:
 
@@ -298,7 +324,7 @@ The transport subsystem (`src/email_automation/mailer.py`) implements a secure t
 
 ---
 
-## 10. Dual-Destination Logging and Audit Trail
+## 11. Dual-Destination Logging and Audit Trail
 
 The auditing architecture (`src/email_automation/logger.py`) maintains parallel audit records across two distinct destinations:
 
@@ -318,7 +344,7 @@ The auditing architecture (`src/email_automation/logger.py`) maintains parallel 
 
 ---
 
-## 11. Insights and Analytical Interpretation Engine
+## 12. Insights and Analytical Interpretation Engine
 
 The Phase 11 analytical interpretation engine (`src/email_automation/insights.py`) evaluates operational metrics and produces dynamic diagnostic observations:
 
@@ -343,7 +369,7 @@ The engine dynamically computes workload density across corporate departments an
 
 ---
 
-## 12. Synthetic and Benchmark Dataset Description
+## 13. Synthetic and Benchmark Dataset Description
 
 The project is supplied with a comprehensive synthetic benchmark dataset located in `data/sample/`:
 
@@ -361,7 +387,7 @@ Contains 24 structured operational tasks linked via foreign keys to the contact 
 
 ---
 
-## 13. Streamlit Operations Dashboard
+## 14. Streamlit Operations Dashboard
 
 The dashboard provides an intuitive, high-contrast operational graphical interface built on Streamlit:
 
@@ -381,7 +407,7 @@ The dashboard provides an intuitive, high-contrast operational graphical interfa
 
 ---
 
-## 14. Dashboard Screenshot Gallery
+## 15. Dashboard Screenshot Gallery
 
 All high-resolution reference screenshots are located in `images/dashboard/`:
 
@@ -434,7 +460,7 @@ The Settings & Diagnostics page provides deep visibility into application config
 
 ---
 
-## 15. Operational CSV and Tabular Report Generation
+## 16. Operational CSV and Tabular Report Generation
 
 The reporting subsystem (`src/email_automation/report_generator.py`) generates certified, audit-ready data exports in tabular CSV format compatible with Microsoft Excel, Google Sheets, and automated analytical pipelines:
 
@@ -445,10 +471,10 @@ The reporting subsystem (`src/email_automation/report_generator.py`) generates c
 
 ---
 
-## 16. Project Directory Structure
+## 17. Project Directory Structure
 
 ```
-email-automation-reminder-system/
+email-automation-reminder-system-v2/
 |-- .env.example
 |-- .gitignore
 |-- CONTRIBUTING.md
@@ -567,14 +593,14 @@ email-automation-reminder-system/
 
 ---
 
-## 17. Virtual Environment Setup and Installation
+## 18. Virtual Environment Setup and Installation
 
 The application is engineered for Python 3.11 on Windows 10/11 using PowerShell:
 
 ### Step 1: Clone Repository
 ```powershell
-git clone https://github.com/Risdane/email-automation-reminder-system.git
-cd "email-automation-reminder-system"
+git clone https://github.com/Risdane/email-automation-reminder-system-v2.git
+cd "email-automation-reminder-system-v2"
 ```
 
 ### Step 2: Open in VS Code
@@ -595,7 +621,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
 
 ---
 
-## 18. Dependency Installation
+## 19. Dependency Installation
 
 Upgrade pip and install all pinned production dependencies:
 
@@ -606,7 +632,7 @@ Upgrade pip and install all pinned production dependencies:
 
 ---
 
-## 19. Environment Configuration
+## 20. Environment Configuration
 
 Copy the provided `.env.example` file to create your local `.env`:
 
@@ -640,7 +666,7 @@ Copy-Item .env.example .env
 
 ---
 
-## 20. Database Initialization and CLI Execution
+## 21. Database Initialization and CLI Execution
 
 Initialize the database schema and populate the benchmark dataset:
 
@@ -657,7 +683,7 @@ Initialize the database schema and populate the benchmark dataset:
 
 ---
 
-## 21. Launching the Streamlit Dashboard
+## 22. Launching the Streamlit Dashboard
 
 Start the interactive permanent Dark Mode dashboard:
 
@@ -676,7 +702,7 @@ Open your browser to:
 
 ---
 
-## 22. Running Automated Tests and Quality Assurance
+## 23. Running Automated Tests and Quality Assurance
 
 Execute the complete automated test suite with pytest:
 
@@ -712,7 +738,7 @@ tests/test_scheduling.py .....................                           [100%]
 
 ---
 
-## 23. Example Operational Workflow
+## 24. Example Operational Workflow
 
 1. Schedule Creation: An administrator registers a task reminder for contact CON001 (Aarav Sharma) titled "Quarterly Code Audit Review", due at 10:00 AM, using the `meeting_reminder` template.
 2. Background Polling: The scheduler checks SQLite every 60 seconds. When system time reaches the deadline, the reminder qualifications pass.
@@ -723,7 +749,7 @@ tests/test_scheduling.py .....................                           [100%]
 
 ---
 
-## 24. Privacy, Security, and Ethical Safeguards
+## 25. Privacy, Security, and Ethical Safeguards
 
 - Default Simulation Enforcement: `DRY_RUN` defaults to `True` in `src/email_automation/config.py`. Even if credentials are configured, no live email can be dispatched unless `DRY_RUN=False` is explicitly set in `.env`.
 - Recipient Allowlisting: When running in live mode, outgoing emails are strictly matched against `ALLOWED_RECIPIENTS`. Addresses not on the list are blocked from dispatch.
@@ -734,7 +760,7 @@ tests/test_scheduling.py .....................                           [100%]
 
 ---
 
-## 25. Limitations
+## 26. Limitations
 
 - Single-Node Persistence: SQLite WAL mode provides high performance for local single-node deployments, but distributed multi-instance clusters would require PostgreSQL.
 - Fictional Benchmark Data: The seeded 20 contacts and 24 reminders are designed for reproducible demonstration rather than stress testing at million-record scales.
@@ -742,7 +768,7 @@ tests/test_scheduling.py .....................                           [100%]
 
 ---
 
-## 26. Future Improvements
+## 27. Future Improvements
 
 - OAuth2 Gmail API Transport: Integrate Google Workspace OAuth2 token refresh as an alternative to SMTP App Passwords.
 - Distributed Celery Task Queue: Enable Redis-backed task distribution for high-throughput enterprise dispatch pipelines.
@@ -750,13 +776,13 @@ tests/test_scheduling.py .....................                           [100%]
 
 ---
 
-## 27. Contribution Guidelines
+## 28. Contribution Guidelines
 
 Contributions are welcome. Please review [CONTRIBUTING.md](CONTRIBUTING.md) for details on our coding standards, branch conventions, and testing protocols. All pull requests must pass the complete 129-test suite (`pytest tests/ -v`) before review.
 
 ---
 
-## 28. License and Author Information
+## 29. License and Author Information
 
 Author: Akash Das  
 Role: System Architect and Developer  
@@ -764,7 +790,7 @@ License: MIT License. See [LICENSE](LICENSE) for full legal text.
 
 ---
 
-## 29. Technical Documentation Index
+## 30. Technical Documentation Index
 
 For in-depth architectural and module specifications, consult the dedicated guides in `docs/`:
 
