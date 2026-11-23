@@ -14,55 +14,105 @@ Project Lead and Reviewer: ChatGPT
 [![Pytest](https://img.shields.io/badge/Pytest-129%20Passed-brightgreen?style=flat-square&logo=pytest&logoColor=white)](tests/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
 [![Platform: Windows](https://img.shields.io/badge/Platform-Windows-0078D6?style=flat-square&logo=windows&logoColor=white)](https://www.microsoft.com/windows)
-[![Mode: Dry-Run Supported](https://img.shields.io/badge/Mode-Dry--Run%20Supported-orange?style=flat-square)](#email-safety-and-operational-guardrails)
-
-The Email Automation & Reminder System is a modular Python application designed to streamline business notifications, temporal task reminders, personalized email generation, and operational reporting. 
-
-Many small to medium-sized organizations struggle with disjointed notification workflows, missed operational deadlines, and lack of auditability in ad-hoc email communications. This project addresses these challenges by combining an ACID-compliant SQLite datastore, a dynamic Jinja-style templating engine, a two-phase gated email dispatch pipeline, and an interactive Streamlit operations dashboard operating permanently in Dark Mode.
-
-Intended users include operations teams, department leads, and system administrators who require a reliable, transparent, and auditable notification infrastructure with complete simulation protection against accidental email dispatches.
+[![Mode: Dry-Run Supported](https://img.shields.io/badge/Mode-Dry--Run%20Supported-orange?style=flat-square)](#19-privacy-security-and-ethical-safeguards)
 
 ---
 
-## Key Features
+## Table of Contents
 
-- Contact CSV Management: Ingests, normalizes, and validates contact directories with department and company associations.
-- Structured Reminder Datasets: Manages task due dates, priority tiers (Low, Medium, High, Urgent), and category mappings.
-- Personalized Email Templates: Reusable text and HTML email templates with dynamic placeholder substitution and strict validation.
-- Gmail SMTP Configuration: Standard STARTTLS email transport on port 587 utilizing secure Google App Passwords.
-- Dry-Run Email Simulation: Default simulation mode that renders, validates, and logs email payloads without opening external network connections.
-- Protected Live Email Sending: Two-phase gated dispatch with recipient allowlisting, connection timeout handling, and failure classification.
-- Autonomous Reminder Scheduling: Date and time evaluation identifying due tasks and advancing states independently of dashboard lifecycle.
-- SQLite Datastore in WAL Mode: Multi-reader, single-writer persistence with foreign key constraints, busy timeout protection, and versioned migrations.
-- Dual-Destination Activity Logging: Real-time logging to rotating files and persistent SQLite activity_logs table.
-- Certified Report Generation: On-demand export of operational CSV summaries, contact rosters, and audit trails.
-- Interactive Streamlit Dashboard: Multi-page web dashboard with 7 dedicated pages for operations, analytics, and diagnostics.
-- Analytical Interpretation Engine: Evaluates delivery success ratios, workload concentration, and generates automated narrative findings.
-- Permanent Dark Mode Interface: Ergonomic visual design using deep slate palettes with zero user-facing theme switches.
-- Comprehensive Test Coverage: 129 passing automated unit and integration tests across 6 dedicated test modules.
+1. [Project Overview](#1-project-overview)
+2. [Project Objectives](#2-project-objectives)
+3. [Key Features](#3-key-features)
+4. [Technology Stack](#4-technology-stack)
+5. [System Architecture](#5-system-architecture)
+6. [Data Workflow and Processing Pipeline](#6-data-workflow-and-processing-pipeline)
+7. [Synthetic and Benchmark Dataset Description](#7-synthetic-and-benchmark-dataset-description)
+8. [Streamlit Operations Dashboard](#8-streamlit-operations-dashboard)
+9. [Dashboard Screenshot Gallery](#9-dashboard-screenshot-gallery)
+10. [Operational CSV and Tabular Report Generation](#10-operational-csv-and-tabular-report-generation)
+11. [Project Directory Structure](#11-project-directory-structure)
+12. [Virtual Environment Setup and Installation](#12-virtual-environment-setup-and-installation)
+13. [Dependency Installation](#13-dependency-installation)
+14. [Environment Configuration](#14-environment-configuration)
+15. [Database Initialization and CLI Execution](#15-database-initialization-and-cli-execution)
+16. [Launching the Streamlit Dashboard](#16-launching-the-streamlit-dashboard)
+17. [Running Automated Tests and Quality Assurance](#17-running-automated-tests-and-quality-assurance)
+18. [Example Operational Workflow](#18-example-operational-workflow)
+19. [Privacy, Security, and Ethical Safeguards](#19-privacy-security-and-ethical-safeguards)
+20. [Limitations](#20-limitations)
+21. [Future Improvements](#21-future-improvements)
+22. [Contribution Guidelines](#22-contribution-guidelines)
+23. [License and Author Information](#23-license-and-author-information)
+24. [Technical Documentation Index](#24-technical-documentation-index)
 
 ---
 
-## Technology Stack
+## 1. Project Overview
 
-| Layer | Technology | Version | Purpose |
+The Email Automation & Reminder System is an enterprise-grade, modular Python application engineered to solve critical operational challenges in scheduled business communications, client follow-ups, deadline tracking, and compliance auditing.
+
+In many operational environments, task reminders and follow-up notices are dispatched manually or through fragmented scripts. This leads to missed deadlines, unrecorded dispatches, duplicate notifications, and severe security risks such as accidental live transmissions during system testing. 
+
+This project delivers a robust, reliable, and decoupled software system that automates the entire lifecycle of scheduled communications:
+- Centralizes contact directories and reminder schedules in an ACID-compliant SQLite datastore.
+- Evaluates temporal deadlines automatically using independent scheduler loops.
+- Injects validated contact attributes into reusable text and HTML email templates.
+- Enforces strict two-phase gated dispatches with simulated dry-run safety by default.
+- Provides a high-contrast, permanent Dark Mode Streamlit operations dashboard for monitoring, queue management, and analytical diagnosis.
+
+Intended users include operations managers, department administrators, customer success teams, and technical auditors who require transparent, dependable, and auditable communication workflows.
+
+---
+
+## 2. Project Objectives
+
+- Architectural Separation of Concerns: Decouple the user interface, scheduling engine, templating services, database persistence, and email transport layers into maintainable modules.
+- Absolute Transport Safety: Guarantee that no live email transmission occurs during testing or development unless explicitly authorized via environment variables and recipient allowlisting.
+- Deterministic Template Rendering: Eliminate template hallucination and incomplete messages through strict placeholder validation and HTML escaping.
+- Resilient Concurrency: Implement SQLite Write-Ahead Logging (WAL) mode to support concurrent multi-reader operations from the Streamlit UI alongside atomic single-writer background updates.
+- Operational Transparency: Maintain an exhaustive dual-destination audit trail across disk log files and relational database activity tables.
+- Comprehensive Verification: Validate every module, state machine transition, and edge case with extensive automated unit and integration tests.
+
+---
+
+## 3. Key Features
+
+- Contact Directory Management: Ingests, validates, and stores corporate contact records with full department, company, and email format validation (RFC 5322 regex).
+- Structured Reminder Queuing: Manages tasks across four priority tiers (Low, Medium, High, Urgent) and five operational categories (Meeting, Payment, Deadline, Follow-Up, General Notice).
+- Contextual Personalization Engine: Merges contact attributes dynamically into email subject lines and message bodies with strict placeholder contracts.
+- Gmail SMTP Integration: Standardized STARTTLS email transport over port 587 supporting secure 16-character Google App Passwords.
+- Dry-Run Simulation Mode: Default execution mode that builds full MIME messages, validates recipient parameters, and logs audit events without making external network calls.
+- Protected Two-Phase Dispatch: Atomic claim mechanism locks reminders in a processing state before transport invocation, preventing duplicate transmission across parallel threads.
+- Autonomous Scheduling Engine: Temporal evaluation loop queries due records where scheduled time has arrived and transitions statuses safely.
+- SQLite Datastore in WAL Mode: Multi-reader, single-writer relational persistence with 5000ms busy timeout protection and foreign key constraint enforcement.
+- Dual-Destination Activity Logging: Real-time logging writing concurrently to rotating filesystem logs and the SQLite activity_logs table.
+- Certified Operational Reports: One-click generation of formatted CSV files for contacts, reminders, dispatch histories, and system health summaries.
+- Streamlit Operations Dashboard: Complete web-based operational control center featuring seven dedicated pages rendered permanently in Dark Mode.
+- Phase 11 Analytical Interpretation Engine: Real-time calculation of dispatch success ratios, workload lead-time distributions, department rankings, and automated narrative findings.
+- 129 Automated Tests: Exhaustive test suite providing 100 percent pass rate across personalization, scheduling, transport, logging, dashboard, and analytical components.
+
+---
+
+## 4. Technology Stack
+
+| Architectural Layer | Technology | Version | Operational Role |
 | :--- | :--- | :--- | :--- |
-| Programming Language | Python | 3.11.0 | Core application runtime and standard library |
-| Web Dashboard | Streamlit | 1.67.0 | Interactive web user interface and state management |
-| Data Processing | Pandas | 3.1.1 | Tabular data manipulation, aggregation, and CSV export |
-| Visual Analytics | Plotly | 7.1.0 | Interactive charting (donut charts, bar charts, timelines) |
-| Database Engine | SQLite | 3 (WAL Mode) | Relational datastore with Write-Ahead Logging |
-| Email Transport | smtplib / email | Standard Library | RFC 5322 MIME construction and SMTP transport |
-| Task Scheduling | schedule | 1.2.2 | Background task evaluation loop |
-| Configuration | python-dotenv | 1.2.1 | Environment variable isolation from .env |
-| Quality Assurance | pytest | 9.2.0 | Automated unit, regression, and migration testing |
-| Version Control | Git / GitHub | Latest | Source control management and documentation |
+| Core Language | Python | 3.11.0 | Primary application runtime, standard library, and typing |
+| Web Dashboard | Streamlit | 1.67.0 | Reactive operations interface and session state management |
+| Data Manipulation | Pandas | 3.1.1 | Dataframe transformations, aggregations, and CSV generation |
+| Data Visualization | Plotly | 7.1.0 | Dark-themed interactive charts (donuts, histograms, bars) |
+| Relational Storage | SQLite | 3 (WAL Mode) | Persistent datastore with Write-Ahead Logging concurrency |
+| Email Transport | smtplib / email | Standard Library | RFC 5322 MIME message construction and SMTP transport |
+| Task Scheduling | schedule | 1.2.2 | Background temporal polling and job orchestration |
+| Environment Config | python-dotenv | 1.2.1 | Secure environment variable parsing from local .env files |
+| Test Framework | pytest | 9.2.0 | Automated unit, regression, and migration testing |
+| Source Control | Git / GitHub | Latest | Version control, release tagging, and project documentation |
 
 ---
 
-## System Architecture
+## 5. System Architecture
 
-The project adheres to a multi-tier decoupled architecture where presentation, business logic, persistence, and transport concerns remain strictly separated.
+The Email Automation & Reminder System is architected as a multi-tier decoupled system. The presentation layer (Streamlit) interacts exclusively with domain services and the SQLite datastore, while the transport layer is isolated behind a strict safety gate.
 
 ```
 +-------------------------------------------------------------------------+
@@ -86,7 +136,203 @@ The project adheres to a multi-tier decoupled architecture where presentation, b
 +-------------------------------------+   +-------------------------------+
 ```
 
-### Directory Structure
+### Module Responsibilities
+
+- src/email_automation/config.py: Manages AppConfig and SmtpConfig, parses environment variables, enforces dry-run defaults, and masks credentials.
+- src/email_automation/database.py: Implements DatabaseManager, handles linear schema migrations (v1 to v9), configures WAL mode, executes CRUD queries, and runs integrity checks.
+- src/email_automation/personalization.py: PersonalizationEngine loads templates, validates placeholder presence, sanitizes inputs, and escapes HTML characters.
+- src/email_automation/reminder_service.py: ReminderService evaluates temporal due dates, transitions reminder states, and orchestrates batch execution.
+- src/email_automation/mailer.py: EmailService executes two-phase gated dispatches, manages SMTP TLS handshakes, handles retries, and records delivery outcomes.
+- src/email_automation/insights.py: Analytical interpretation engine computing operational KPIs, time-horizon distributions, department rankings, and narrative diagnostics.
+- src/email_automation/logger.py: Multi-destination logging utility that directs structured events to rotating files and SQLite activity tables.
+- src/email_automation/report_generator.py: Compiles operational summaries, exports datasets to CSV, and generates system health diagnostics.
+
+### Reminder Lifecycle State Machine
+
+A reminder progresses through a finite, deterministic set of operational states:
+
+```
+[Imported/Created]
+        |
+        v
+    (pending) --------[Due Date Reached & Rendered]--------> (ready)
+        |                                                       |
+        |                                                       v
+        |                                                 (processing) [Atomic Claim]
+        |                                                       |
+        +-----------------------------------+-------------------+
+                                            |
+                         +------------------+------------------+
+                         |                                     |
+                  [DRY_RUN = True]                      [DRY_RUN = False]
+                         |                                     |
+                         v                                     v
+                    (simulated)                              (sent) [SMTP 250 OK]
+                         |                                     |
+                         v                                     v
+                    [Terminated]                          [Terminated]
+                                                               |
+                                            +------------------+------------------+
+                                            |                                     |
+                                    [SMTP/Network Error]                   [Connection Drop]
+                                            |                                     |
+                                            v                                     v
+                                         (failed)                        (delivery_unknown)
+                                            |                                     |
+                                    [Retry / Review]                       [Manual Audit]
+```
+
+---
+
+## 6. Data Workflow and Processing Pipeline
+
+The system processes data across five distinct, sequential lifecycle stages:
+
+```
++------------------+     +------------------+     +------------------+
+|     Stage 1      |     |     Stage 2      |     |     Stage 3      |
+|   Ingestion &    | --> |   Temporal Due   | --> |  Personalization |
+|    Validation    |     |    Evaluation    |     |   & Rendering    |
++------------------+     +------------------+     +------------------+
+                                                           |
+                                                           v
++------------------+                              +------------------+
+|     Stage 5      |                              |     Stage 4      |
+|  Dual Auditing & | <--------------------------- |    Two-Phase     |
+|  Interpretation  |                              |  Gated Dispatch  |
++------------------+                              +------------------+
+```
+
+### Stage 1: Ingestion and Validation
+Contact records and reminder schedules are imported from CSV files or entered manually through the dashboard. The system validates email syntax against RFC 5322 regex rules, parses due dates into ISO 8601 timestamps, and enforces foreign key references between reminders and contacts.
+
+### Stage 2: Temporal Due-Date Evaluation
+The scheduler periodically queries the SQLite database for records matching:
+```sql
+SELECT * FROM reminders WHERE status = 'pending' AND datetime(due_date) <= datetime('now');
+```
+Records whose scheduled deadline is in the future remain safely in the pending state.
+
+### Stage 3: Template Personalization and Rendering
+The PersonalizationEngine retrieves the designated text and HTML templates from `templates/email_templates/`. It maps contact attributes (name, company, department) and reminder metadata (task name, due date, priority) to template placeholders (`{name}`, `{task_name}`, `{due_date}`, `{priority}`, `{company}`). If any required placeholder is missing, a MissingPlaceholderError is raised, preventing malformed email generation. Successfully rendered reminders advance to the ready state.
+
+### Stage 4: Two-Phase Gated Dispatch
+To ensure idempotency in concurrent environments:
+1. Claim Phase: The mailer atomically updates the status from `ready` to `processing`.
+2. Gated Transport:
+   - If `DRY_RUN=True`: The MIME message is verified and routed to an internal simulation sink, transitioning the status to `simulated`.
+   - If `DRY_RUN=False`: The mailer verifies the recipient against `ALLOWED_RECIPIENTS`, establishes a STARTTLS connection with `smtp.gmail.com:587`, authenticates with the Google App Password, and sends the message. Upon receiving a `250 OK` server acknowledgment, the status transitions to `sent`.
+   - In case of network errors or authentication failures, the reminder increments its retry counter and transitions to `failed`.
+   - If a connection drops after the `DATA` phase, the reminder transitions to `delivery_unknown` to prevent double-sending.
+
+### Stage 5: Dual Auditing and Analytical Interpretation
+Every dispatch event triggers dual audit records: a human-readable entry in `logs/email_automation.log` and a structured row in the SQLite `activity_logs` table. The InterpretationEngine reads these logs to evaluate delivery success ratios, department workloads, and generate dynamic findings.
+
+---
+
+## 7. Synthetic and Benchmark Dataset Description
+
+The project is supplied with a comprehensive synthetic benchmark dataset located in `data/sample/`:
+
+### Contacts Dataset (`data/sample/contacts.csv`)
+Contains 20 verified corporate contact profiles distributed across seven functional departments:
+- Departments: Engineering (4), Marketing (3), Sales (3), Operations (3), IT (3), Finance (2), Administration (2).
+- Companies: Apex Innovations, Nexus TechCorp, Vanguard Logistics, Horizon Media, Crestline Partners.
+- Data Invariants: All email addresses utilize the standard reserved RFC 2606 domain (`@example.com`) to prevent accidental external deliveries during development.
+
+### Reminders Dataset (`data/sample/reminders.csv`)
+Contains 24 structured operational tasks linked via foreign keys to the contact directory:
+- Priority Distribution: Low (4), Medium (8), High (8), Urgent (4).
+- Category Distribution: Meeting (5), Payment (5), Deadline (5), Follow-Up (5), General Notice (4).
+- Temporal Baseline: All sample reminders are baseline-scheduled for January 2027. This deliberate temporal offset guarantees that when a developer initializes the database, the sample tasks remain in a clean future `pending` state, allowing deterministic testing of due-date triggers without unmanaged past-due collisions.
+
+---
+
+## 8. Streamlit Operations Dashboard
+
+The dashboard provides an intuitive, high-contrast operational graphical interface built on Streamlit:
+
+### Architecture and Design System
+- Permanent Dark Mode: Built with an ergonomic slate palette (`#0F172A` deep navy background, `#1E293B` container surfaces, `#38BDF8` celestial cyan accents, `#10B981` emerald success, `#F59E0B` amber warnings, `#EF4444` coral errors). There are zero user-facing theme switches, ensuring visual consistency.
+- Session State Persistence: Filter selections, active drill-downs, and pagination states persist cleanly across component re-renders.
+- Sanitized Table Rendering: All tabular data is routed through a centralized helper (`dashboard/components/tables.py`) that enforces valid content-based auto-heights, permanently eliminating `StreamlitInvalidHeightError` exceptions.
+
+### Seven Dedicated Dashboard Pages
+1. Overview: Executive KPI ribbon, status distribution donut chart, dispatch outcome comparison bar chart, manual dispatch trigger, and real-time activity stream.
+2. Contacts: Filterable contact directory, department filters, and individual contact inspector displaying linked reminder tasks.
+3. Reminders: Multi-criterion filtering by status, priority, and category, operational table, interactive live template preview modal, and manual reminder creation form.
+4. Email History: Full audit log of all dispatch attempts, filterable by outcome (simulated, sent, failed, delivery_unknown), with expandable raw payload inspectors.
+5. Insights & Analytics: Phase 11 analytical engine displaying delivery success metrics, upcoming actionable workload, time-horizon distribution charts, department workload bars, and automated narrative findings.
+6. Reports: Certified one-click CSV report generators for reminders, contacts, and activity logs, alongside system health summaries.
+7. Settings & Diagnostics: Environment configuration inspection, safe masked credential verification, SQLite WAL schema diagnostics, table record counters, and sample data synchronization.
+
+---
+
+## 9. Dashboard Screenshot Gallery
+
+All high-resolution reference screenshots are located in `images/dashboard/`:
+
+### Overview Dashboard
+![Overview Dashboard](images/dashboard/overview_dark.png)
+
+The Overview page serves as the primary executive monitoring cockpit. It displays four top-level KPI metric cards showing Total Reminders (24), Pending Workload (24), Ready for Dispatch (0), and Processed Dispatches (0). In the center, an interactive Plotly donut chart visualizes the reminder status breakdown (100 percent pending in the initial baseline), adjacent to a dispatch outcome comparison bar chart. Below the charts, the operator has access to an interactive "Process Due Reminders Now" trigger button for manual batch runs, followed by a live activity table streaming the latest system logs with severity badges.
+
+---
+
+### Contacts Directory
+![Contacts Directory](images/dashboard/contacts_dark.png)
+
+The Contacts page provides a centralized directory for managing recipient profiles. An interactive search bar at the top enables instant real-time filtering by contact name, email address, department, or company affiliation. The main responsive table displays contact records from CON001 through CON020. Below the table, the Contact Detail Inspector dropdown allows the operator to isolate an individual profile (such as Aarav Sharma, IT Department at Apex Innovations) and view all associated reminder tasks linked to that individual.
+
+---
+
+### Reminders Management
+![Reminders Management](images/dashboard/reminders_dark.png)
+
+The Reminders page is the operational center for task scheduling. A multi-criterion filter toolbar allows operators to filter records by status (pending, ready, simulated, sent, failed), priority tier (low, medium, high, urgent), and category. The main operational table displays reminder IDs, recipient contacts, task titles, scheduled due dates, and priority badges. Operators can expand any individual reminder to access the live template preview modal, which renders both plain-text and HTML email previews with all placeholder variables dynamically populated. The page also includes a form for registering new reminder tasks.
+
+---
+
+### Email History and Audit Trail
+![Email History](images/dashboard/email_history_dark.png)
+
+The Email History page delivers a complete historical ledger of all email dispatch events. Operators can filter transactions by execution outcome: All, Simulated, Sent (SMTP Accepted), Failed, or Delivery Unknown. The audit table records the exact timestamp, recipient address, email subject line, transport channel utilized, and final delivery status. Each row includes an expandable inspector that reveals the complete MIME headers, rendered body content, and remote SMTP server acknowledgment codes.
+
+---
+
+### Insights & Analytics
+![Insights & Analytics](images/dashboard/insights_dark.png)
+
+The Insights & Analytics page houses the Phase 11 analytical interpretation engine. At the top, operational metric cards report total dispatch attempts, realized delivery success rates, failure ratios, and actionable upcoming workload. The workload distribution chart groups reminders across chronological lead-time horizons (Past-Due, Due Today, Due Tomorrow, Next 7 Days, Beyond 7 Days). A horizontal bar chart breaks down workload density by corporate department. Below the charts, automated narrative findings cards translate quantitative database metrics into plain-language diagnostic observations and actionable workload balancing recommendations.
+
+---
+
+### Reports and Data Exports
+![Reports and Exports](images/dashboard/reports_dark.png)
+
+The Reports page enables operators to export certified operational datasets for offline compliance, business review, and spreadsheet analysis. Three dedicated export cards feature one-click download buttons for `reminders_export.csv`, `contacts_export.csv`, and `activity_logs_export.csv`. The page also generates an on-demand consolidated System Health and Operational Summary report detailing database schema integrity, table record totals, and delivery reliability metrics.
+
+---
+
+### Settings & System Diagnostics
+![Settings and Diagnostics](images/dashboard/settings_dark.png)
+
+The Settings & Diagnostics page provides deep visibility into application configuration and database health. The Configuration Overview panel displays active execution mode (Dry-Run indicator), database file path, template directory, and SMTP connection parameters with sensitive passwords securely masked. Below, the Database Diagnostics panel runs live SQLite integrity checks (`PRAGMA integrity_check`), displaying active schema version (Version 9 in SQLite WAL mode) and real-time record counts across contacts, reminders, and activity log tables.
+
+---
+
+## 10. Operational CSV and Tabular Report Generation
+
+The reporting subsystem (`src/email_automation/report_generator.py`) generates certified, audit-ready data exports in tabular CSV format compatible with Microsoft Excel, Google Sheets, and automated analytical pipelines:
+
+- Reminders Operational Export (`outputs/reports/reminders_report.csv`): Exports all task records with contact names, email addresses, priority levels, categories, scheduled due dates, and current lifecycle statuses.
+- Contact Directory Export (`outputs/reports/contacts_report.csv`): Exports the complete organizational contact directory with department and company affiliations.
+- System Activity History Export (`outputs/reports/activity_logs_report.csv`): Exports the complete timestamped audit trail of all application events, error stack traces, and email dispatches.
+- System Health Summary: A consolidated text and markdown diagnostic report compiling database integrity results, foreign key validations, and delivery performance metrics.
+
+---
+
+## 11. Project Directory Structure
 
 ```
 email-automation-reminder-system/
@@ -146,8 +392,11 @@ email-automation-reminder-system/
 |   |-- SMTP_CONFIGURATION_GUIDE.md
 |   |-- STREAMLIT_DASHBOARD_GUIDE.md
 |   |-- TESTING_GUIDE.md
-|   |-- USER_GUIDE.md
-|   `-- screenshots/
+|   `-- USER_GUIDE.md
+|-- images/
+|   |-- architecture/
+|   |   `-- .gitkeep
+|   `-- dashboard/
 |       |-- .gitkeep
 |       |-- contacts_dark.png
 |       |-- email_history_dark.png
@@ -156,11 +405,6 @@ email-automation-reminder-system/
 |       |-- reminders_dark.png
 |       |-- reports_dark.png
 |       `-- settings_dark.png
-|-- images/
-|   |-- architecture/
-|   |   `-- .gitkeep
-|   `-- dashboard/
-|       `-- .gitkeep
 |-- logs/
 |   `-- .gitkeep
 |-- outputs/
@@ -208,198 +452,126 @@ email-automation-reminder-system/
     `-- test_scheduling.py
 ```
 
-### Module Responsibilities
-
-- src/email_automation/config.py: Encapsulates AppConfig and SmtpConfig, loading environment variables safely with default dry-run enforcement and credential masking.
-- src/email_automation/database.py: DatabaseManager handling schema creation (v1 through v9), WAL configuration, CRUD operations, transactions, and integrity checks.
-- src/email_automation/personalization.py: PersonalizationEngine managing template files, placeholder discovery, dynamic context merging, and HTML escaping.
-- src/email_automation/reminder_service.py: ReminderService coordinating due-date evaluation, reminder status transitions, and batch execution workflows.
-- src/email_automation/mailer.py: EmailService executing two-phase gated dispatches, retry handling, exception mapping, and mock simulation routing.
-- src/email_automation/insights.py: Analytical interpretation engine computing delivery metrics, department concentrations, and narrative operational findings.
-- src/email_automation/logger.py: Multi-destination logging utility writing structured events to disk files and SQLite tables simultaneously.
-- src/email_automation/report_generator.py: Generates downloadable operational CSV reports and system health metrics.
-
 ---
 
-## Installation and Setup
+## 12. Virtual Environment Setup and Installation
 
-The following instructions are verified for Windows 10/11 using PowerShell.
+The application is engineered for Python 3.11 on Windows 10/11 using PowerShell:
 
-### Step 1: Clone or Download the Repository
-
+### Step 1: Clone Repository
 ```powershell
 git clone https://github.com/Risdane/email-automation-reminder-system.git
 cd "email-automation-reminder-system"
 ```
 
-### Step 2: Open Project in VS Code
-
+### Step 2: Open in VS Code
 ```powershell
 code .
 ```
 
-### Step 3: Create and Activate Virtual Environment
-
-If setting up a fresh installation without an existing `.venv`:
-
+### Step 3: Create Virtual Environment
 ```powershell
 python -m venv .venv
-.\.venv\Scripts\Activate.ps1
 ```
 
-If script execution is disabled in PowerShell, enable it for the current process:
-
+### Step 4: Activate Virtual Environment
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
 .\.venv\Scripts\Activate.ps1
 ```
 
-### Step 4: Install Dependencies
+---
+
+## 13. Dependency Installation
+
+Upgrade pip and install all pinned production dependencies:
 
 ```powershell
 .\.venv\Scripts\python.exe -m pip install --upgrade pip
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 ```
 
-### Step 5: Configure Environment Variables
+---
 
-Copy the template file `.env.example` to create `.env`:
+## 14. Environment Configuration
+
+Copy the provided `.env.example` file to create your local `.env`:
 
 ```powershell
 Copy-Item .env.example .env
 ```
 
----
+### Environment Variables Reference
 
-## Configuration
-
-Application settings are managed through environment variables defined in `.env`.
-
-| Variable | Type | Default | Description |
+| Variable Name | Data Type | Default Value | Purpose and Description |
 | :--- | :--- | :--- | :--- |
-| DRY_RUN | Boolean | True | Safety toggle. When True, email sending is simulated and no network calls are made. |
-| DATABASE_PATH | Path | data/database/reminders.db | Filesystem path to centralized SQLite database. |
-| TEMPLATES_DIR | Path | templates/email_templates | Path to directory containing text and HTML email templates. |
-| LOG_FILE | Path | logs/email_automation.log | Path to rotating application log file. |
-| SMTP_HOST | String | smtp.gmail.com | Remote SMTP server hostname. |
-| SMTP_PORT | Integer | 587 | Remote SMTP port (587 for STARTTLS). |
+| DRY_RUN | Boolean | True | Operational safety switch. When True, all sending is simulated. |
+| DATABASE_PATH | Path | data/database/reminders.db | Local filesystem path to the SQLite datastore. |
+| TEMPLATES_DIR | Path | templates/email_templates | Path to directory containing text and HTML templates. |
+| LOG_FILE | Path | logs/email_automation.log | Destination path for rotating system logs. |
+| SMTP_HOST | String | smtp.gmail.com | Remote SMTP server host. |
+| SMTP_PORT | Integer | 587 | Remote SMTP server port (587 for STARTTLS). |
 | SMTP_SENDER_EMAIL | String | empty | Authorized sender Gmail address. |
-| SMTP_APP_PASSWORD | String | empty | 16-character Google App Password (never account password). |
-| ALLOWED_RECIPIENTS | String | empty | Comma-separated allowlist of recipient emails for live mode. |
+| SMTP_APP_PASSWORD | String | empty | 16-character Google App Password (never personal password). |
+| ALLOWED_RECIPIENTS | String | empty | Comma-separated list of authorized recipient emails in live mode. |
 
-Never commit `.env` containing populated credentials to Git. The `.gitignore` file strictly excludes `.env` while preserving `.env.example`.
-
----
-
-## Gmail SMTP Setup
-
-To configure live email transmission when `DRY_RUN=False`:
-
-1. Sign in to your Google Account and navigate to Google Account Security.
-2. Enable 2-Step Verification if not already active.
-3. Search for App Passwords in the security search bar.
-4. Generate a new App Password with app name `EmailAutomationSystem`.
-5. Google will provide a 16-character code (example: `abcd efgh ijkl mnop`).
-6. Place this code into your local `.env` file as `SMTP_APP_PASSWORD=abcdefghijklmnop`.
+### Gmail SMTP Setup Instructions
+1. Navigate to Google Account Security.
+2. Enable 2-Step Verification if not active.
+3. Search for App Passwords.
+4. Create an App Password with the name `EmailAutomationSystem`.
+5. Google generates a 16-character passcode (e.g., `abcd efgh ijkl mnop`).
+6. Set `SMTP_APP_PASSWORD=abcdefghijklmnop` in your local `.env`.
 7. Configure `SMTP_SENDER_EMAIL=your_email@gmail.com`.
-8. Ensure `SMTP_HOST=smtp.gmail.com` and `SMTP_PORT=587`.
-
-Do not use your personal Gmail login password. Google blocks standard password authentication for SMTP; App Passwords are required.
+8. Never commit `.env` to Git; it is strictly excluded by `.gitignore`.
 
 ---
 
-## Database and Sample Data
+## 15. Database Initialization and CLI Execution
 
-The system includes pre-configured sample datasets located in `data/sample/`:
-- `contacts.csv`: 20 verified corporate contacts across 7 departments.
-- `reminders.csv`: 24 structured tasks baseline-scheduled for January 2027.
-
-### Initialize Database and Import Sample Data via CLI
+Initialize the database schema and populate the benchmark dataset:
 
 ```powershell
+# Create SQLite tables and apply versioned migrations
 .\.venv\Scripts\python.exe main.py --init-db
+
+# Sync sample contacts and reminders from CSV files
 .\.venv\Scripts\python.exe main.py --sync-sample-data
-```
 
-### Run Due-Date Check and Batch Dispatch via CLI
-
-```powershell
+# Execute an immediate temporal check and batch dispatch pass
 .\.venv\Scripts\python.exe main.py --run-once
 ```
 
-In default dry-run mode, due tasks will be rendered, simulated, and logged to the database without sending external emails.
-
 ---
 
-## Running the Application
+## 16. Launching the Streamlit Dashboard
 
-To launch the permanent Dark Mode Streamlit operations dashboard:
+Start the interactive permanent Dark Mode dashboard:
 
 ```powershell
 .\.venv\Scripts\python.exe -m streamlit run run_dashboard.py
 ```
 
-Or execute directly through the dashboard entrypoint:
+Or via direct app entrypoint:
 
 ```powershell
 .\.venv\Scripts\python.exe -m streamlit run dashboard/app.py
 ```
 
-Once running, access the dashboard in your web browser at:
+Open your browser to:
 `http://localhost:8501`
 
 ---
 
-## Dashboard Pages
+## 17. Running Automated Tests and Quality Assurance
 
-The dashboard features seven specialized pages accessible from the left sidebar navigation, rendered in high-contrast Dark Mode (`#0F172A` background, `#1E293B` containers, `#38BDF8` accents):
-
-1. Overview: Executive KPI metric cards, Plotly status distribution donut chart, dispatch outcome comparison bar chart, interactive manual dispatch trigger, and real-time activity stream.
-2. Contacts: Searchable and filterable contact directory, department filters, and individual contact inspector with associated reminder drill-down.
-3. Reminders: Multi-criterion filtering by status, priority, and category, interactive tabular view, live template rendering preview modal, and manual reminder creation form.
-4. Email History: Complete historical log of all dispatch attempts, filterable by outcome (simulated, sent, failed, delivery_unknown), with expandable payload inspectors.
-5. Insights & Analytics: Phase 11 analytical engine displaying delivery success metrics, upcoming actionable workload, time-horizon distribution charts, department workload bars, and automated narrative findings.
-6. Reports: Certified one-click CSV report generators for reminders, contacts, and activity logs, alongside system health summaries.
-7. Settings & Diagnostics: Environment configuration inspection, safe masked credential verification, SQLite WAL schema diagnostics, table record counters, and sample data synchronization.
-
----
-
-## Insights and Analytics
-
-The Insights & Analytics module (`src/email_automation/insights.py`) evaluates operational workload patterns and dispatch performance metrics:
-
-- Standardized Success Formula: Calculates realized success percentage as `(Simulated + Sent) / Total Attempted * 100%`.
-- Strict Actionable Workload Filtering: Audited logic guarantees upcoming actionable workload includes only active records in `pending` or `ready` states with future due dates, strictly excluding completed terminal records (`simulated`, `sent`, `failed`, `delivery_unknown`).
-- Dynamic Department Rankings: Aggregates notification workload across departments and identifies workload peaks.
-- Automated Narrative Findings: Translates quantitative database state into readable diagnostic observations and recommendations.
-
-Note on Sample Data: The bundled demonstration dataset represents a small fictional corporate sample. Metrics displayed during demonstration reflect this seeded dataset and are designed to validate analytical correctness rather than real enterprise volume.
-
----
-
-## Email Safety and Operational Guardrails
-
-This project enforces strict defense-in-depth safety controls to eliminate the risk of accidental email spam or unauthorized transmissions:
-
-1. Dry-Run Default: `DRY_RUN` defaults to `True` in `src/email_automation/config.py`. Even if credentials are configured, no live email can be dispatched unless `DRY_RUN=False` is explicitly specified.
-2. Recipient Allowlisting: When running in live mode, outgoing emails are checked against `ALLOWED_RECIPIENTS`. Addresses not on the list are blocked from dispatch.
-3. Two-Phase Gated Claim: Reminders must transition from `ready` to `processing` before transport invocation, preventing duplicate sends in concurrent execution.
-4. Conservative Failure Handling: If a transport connection drops after message data transmission, the record transitions to `delivery_unknown` and is never automatically retried, avoiding duplicate email reception by recipients.
-5. Zero Automatic Dashboard Sends: Simply opening or browsing the dashboard never sends real emails.
-
----
-
-## Testing and Quality Assurance
-
-The project contains a comprehensive automated test suite implemented with `pytest`.
-
-To execute the complete test suite:
+Execute the complete automated test suite with pytest:
 
 ```powershell
 .\.venv\Scripts\python.exe -m pytest tests/ -v
 ```
 
-### Observed Test Results
+### Observed Test Verification
 
 ```
 ============================= test session starts =============================
@@ -415,13 +587,11 @@ tests/test_mailer.py .......................                             [ 67%]
 tests/test_personalization.py .....................                      [ 83%]
 tests/test_scheduling.py .....................                           [100%]
 
-============================ 129 passed in 11.52s =============================
+============================ 129 passed in 15.05s =============================
 ```
 
-### Test Suite Breakdown
-
-- tests/test_dashboard.py (24 tests): Tests permanent dark mode tokens, session state, height sanitization preventing `StreamlitInvalidHeightError`, manual dispatch safeguards, and UI helpers.
-- tests/test_insights.py (15 tests): Verifies 7 status metrics, upcoming workload filtering, performance formulas, dynamic rankings, and chart generation.
+- tests/test_dashboard.py (24 tests): Validates dark theme styling, session state, height sanitization preventing `StreamlitInvalidHeightError`, and manual dispatch safety controls.
+- tests/test_insights.py (15 tests): Tests all 7 reminder status metrics, actionable upcoming workload filtering, performance formulas, and dynamic rankings.
 - tests/test_logging_reporting.py (25 tests): Verifies dual logging, database activity schema, legacy Phase 9 schema migration, and CSV export integrity.
 - tests/test_mailer.py (23 tests): Validates mock SMTP transport, dry-run safety gating, retry policies, credential masking, and concurrency claiming.
 - tests/test_personalization.py (21 tests): Verifies template placeholder substitution, missing placeholder exceptions, Unicode safety, and HTML escaping.
@@ -429,56 +599,59 @@ tests/test_scheduling.py .....................                           [100%]
 
 ---
 
-## Visual Interface Gallery
+## 18. Example Operational Workflow
 
-The dashboard operates exclusively in Dark Mode. All reference screenshots are preserved in `docs/screenshots/`:
-
-### Overview Dashboard
-![Overview Dashboard](docs/screenshots/overview_dark.png)
-
-### Contacts Directory
-![Contacts Directory](docs/screenshots/contacts_dark.png)
-
-### Reminders Management
-![Reminders Management](docs/screenshots/reminders_dark.png)
-
-### Email History and Audit Trail
-![Email History](docs/screenshots/email_history_dark.png)
-
-### Insights and Analytics
-![Insights and Analytics](docs/screenshots/insights_dark.png)
-
-### Reports and Exports
-![Reports and Exports](docs/screenshots/reports_dark.png)
-
-### Settings and System Diagnostics
-![Settings and Diagnostics](docs/screenshots/settings_dark.png)
+1. Schedule Creation: An administrator registers a task reminder for contact CON001 (Aarav Sharma) titled "Quarterly Code Audit Review", due at 10:00 AM, using the `meeting_reminder` template.
+2. Background Polling: The scheduler checks SQLite every 60 seconds. When system time reaches the deadline, the reminder qualifications pass.
+3. Dynamic Rendering: The PersonalizationEngine loads `meeting_reminder.txt` and `meeting_reminder.html`, merges Aarav Sharma's context, validates placeholder completeness, and marks the task as `ready`.
+4. Gated Claim: The mailer claims the task, atomically transitioning it to `processing`.
+5. Safe Transmission: With `DRY_RUN=True`, the mailer routes the MIME message to the simulation sink, logs the payload, and marks the status as `simulated`.
+6. Audit and Insights: The transaction is logged in `logs/email_automation.log` and the `activity_logs` table. The operator visits the Insights page to view the updated delivery metrics.
 
 ---
 
-## Limitations and Future Improvements
+## 19. Privacy, Security, and Ethical Safeguards
 
-### Genuine Limitations
-- Local SQLite Datastore: SQLite WAL mode provides high performance for local single-node deployments, but distributed multi-instance clusters would require PostgreSQL.
+- Default Simulation Enforcement: `DRY_RUN` defaults to `True` in `src/email_automation/config.py`. Even if credentials are configured, no live email can be dispatched unless `DRY_RUN=False` is explicitly set in `.env`.
+- Recipient Allowlisting: When running in live mode, outgoing emails are strictly matched against `ALLOWED_RECIPIENTS`. Addresses not on the list are blocked from dispatch.
+- Credential Isolation: Sensitive files (`.env`, `.streamlit/secrets.toml`) and database files are strictly excluded from version control via `.gitignore`.
+- Password Masking: `AppConfig` masks passwords in string representations and logs, preventing credential leakage in tracebacks.
+- Conservative Failure Handling: If a connection drops after the `DATA` phase, the record transitions to `delivery_unknown` and is never automatically retried, avoiding duplicate email reception by recipients.
+- Zero Automatic Dashboard Sends: Simply opening or browsing the dashboard never sends real emails.
+
+---
+
+## 20. Limitations
+
+- Single-Node Persistence: SQLite WAL mode provides high performance for local single-node deployments, but distributed multi-instance clusters would require PostgreSQL.
 - Fictional Benchmark Data: The seeded 20 contacts and 24 reminders are designed for reproducible demonstration rather than stress testing at million-record scales.
 - Manual Allowlist Configuration: In live mode, recipients must be manually declared in `.env` to prevent external leaks.
 
-### Future Improvements
+---
+
+## 21. Future Improvements
+
 - OAuth2 Gmail API Transport: Integrate Google Workspace OAuth2 token refresh as an alternative to SMTP App Passwords.
 - Distributed Celery Task Queue: Enable Redis-backed task distribution for high-throughput enterprise dispatch pipelines.
 - Inbound IMAP Webhook Listener: Add automatic inbound parsing to track replies and update reminder completion status automatically.
 
 ---
 
-## License and Author
+## 22. Contribution Guidelines
+
+Contributions are welcome. Please review [CONTRIBUTING.md](CONTRIBUTING.md) for details on our coding standards, branch conventions, and testing protocols. All pull requests must pass the complete 129-test suite (`pytest tests/ -v`) before review.
+
+---
+
+## 23. License and Author Information
 
 Author: Akash Das  
-Role: Developer and System Architect  
+Role: System Architect and Developer  
 License: MIT License. See [LICENSE](LICENSE) for full legal text.
 
 ---
 
-## Technical Documentation Index
+## 24. Technical Documentation Index
 
 For in-depth architectural and module specifications, consult the dedicated guides in `docs/`:
 

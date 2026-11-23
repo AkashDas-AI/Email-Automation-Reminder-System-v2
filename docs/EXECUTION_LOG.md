@@ -360,9 +360,13 @@ This document records chronological execution steps, architectural implementatio
     - Ran automated regex scan across codebase, documentation, tests, and configuration.
     - Confirmed zero hardcoded production passwords, tokens, API keys, or private email credentials.
     - Confirmed only mock test values exist in unit tests.
-  - Master documentation rewrite:
-    - Authored comprehensive root `README.md` following strict enterprise formatting rules (0 emojis, 0 em dashes, verified Shields.io badges, complete architecture, Windows installation, CLI operations, 7-page dark mode dashboard walkthrough, safety controls, testing report, and visual gallery).
-  - Unnumbered uppercase documentation reorganization:
+  - Documentation and visual asset reorganization:
+    - Relocated all 7 Dark Mode dashboard screenshots to `images/dashboard/` (`images/dashboard/overview_dark.png`, `contacts_dark.png`, `reminders_dark.png`, `email_history_dark.png`, `insights_dark.png`, `reports_dark.png`, `settings_dark.png`).
+    - Removed obsolete `docs/screenshots/` directory completely.
+    - Updated `docs/SCREENSHOT_GUIDE.md` and `docs/README.md` to reference `images/dashboard/`.
+  - Master README overhaul:
+    - Restructured root `README.md` into 24 comprehensive sections equipped with an interactive Table of Contents with valid anchor links.
+    - Embedded the full Dashboard Screenshot Gallery with individual narrative descriptions explaining the UI layout, metrics, charts, and operational controls for each page.
     - Maintained all technical guides in `docs/` with unnumbered uppercase filenames (`ARCHITECTURE.md`, `DATA_FLOW.md`, `USER_GUIDE.md`, `TESTING_GUIDE.md`, `SCREENSHOT_GUIDE.md`, etc.).
   - Executed full test suite regression:
     - Verified 129/129 passing automated tests in sub-15 seconds.
