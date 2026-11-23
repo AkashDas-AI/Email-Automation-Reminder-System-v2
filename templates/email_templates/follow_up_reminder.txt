@@ -1,0 +1,18 @@
+Dear {first_name},
+
+Following up regarding: {notes}. We would appreciate an update on this item at your earliest convenience.
+
+FOLLOW-UP DETAILS:
+- Subject: {notes}
+- Target Date: {due_at}
+- Reference Key: {reference_id}
+- Department: {department}
+- Company: {company}
+
+Please let us know if you require any additional information or documentation to proceed with this item.
+
+Warm regards,
+{company} Coordination Team
+
+---
+Follow-up notification generated for {full_name} ({email}) | Ref: {reference_id}

@@ -1,0 +1,18 @@
+Dear {first_name},
+
+This is a friendly notification regarding an upcoming payment commitment associated with invoice or reference #{reference_id}.
+
+PAYMENT DETAILS:
+- Description: {notes}
+- Due Date: {due_at}
+- Invoice / Ref ID: {reference_id}
+- Billing Department: {department}
+- Company: {company}
+
+Kindly ensure payment processing is completed on or before the due date to avoid service interruption or accounting delays. If payment has already been disbursed, please disregard this notice.
+
+Sincerely,
+{company} Finance & Accounts
+
+---
+Payment reminder dispatched to {full_name} ({email}) | Ref: {reference_id}

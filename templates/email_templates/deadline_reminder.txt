@@ -1,0 +1,18 @@
+Hello {first_name},
+
+This is an automated deadline reminder for an assigned milestone: {notes}.
+
+TASK DETAILS:
+- Deliverable: {notes}
+- Deadline: {due_at}
+- Task Tracking ID: {reference_id}
+- Department: {department}
+- Company: {company}
+
+Please review the deliverables and complete the submission prior to the deadline. If you foresee any obstacles or require team assistance, please escalate to your project coordinator.
+
+Regards,
+{company} Project Management Office
+
+---
+Deadline notice sent to {full_name} ({email}) | Ref: {reference_id}

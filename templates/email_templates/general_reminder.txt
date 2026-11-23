@@ -1,0 +1,19 @@
+Hello {first_name},
+
+Please review the following operational update regarding: {notes}.
+
+NOTICE DETAILS:
+- Summary: {notes}
+- Effective Date: {due_at}
+- Reference ID: {reference_id}
+- Category: {reminder_type}
+- Department: {department}
+- Company: {company}
+
+This update is circulated for your awareness. Please review and retain this notification for your records. If you have questions, reach out to your department lead.
+
+Best regards,
+{company} Administration
+
+---
+Notification dispatched to {full_name} ({email}) | Ref: {reference_id}

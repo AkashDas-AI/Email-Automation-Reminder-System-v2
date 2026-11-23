@@ -1,0 +1,18 @@
+Hello {first_name},
+
+This is a scheduled reminder for your upcoming session regarding: {notes}.
+
+MEETING DETAILS:
+- Subject: {notes}
+- Scheduled Time: {due_at}
+- Reference ID: {reference_id}
+- Department: {department}
+- Company: {company}
+
+Please ensure any relevant agendas, slides, or preparatory notes are ready prior to the meeting time. If you need to reschedule, please notify the organizers in advance.
+
+Best regards,
+{company} Operations Team
+
+---
+Automated notification for {full_name} ({email}) | Ref: {reference_id}
