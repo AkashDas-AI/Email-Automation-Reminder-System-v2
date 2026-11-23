@@ -1,0 +1,25 @@
+reminder_id,contact_id,reminder_type,template_key,due_at,status,reference_id,notes
+REM001,CON001,Task Deadline,deadline,2027-01-10T10:00:00Z,pending,TSK-1001,Submit Q1 cloud infrastructure upgrade plan
+REM002,CON002,Meeting,meeting,2027-01-11T14:30:00Z,pending,MTG-2001,Annual HR policy and benefits review session
+REM003,CON003,Payment,payment,2027-01-12T11:00:00Z,pending,INV-3001,Pending vendor software license subscription payment
+REM004,CON004,Follow-up,follow_up,2027-01-13T16:00:00Z,pending,MKT-4001,Follow-up on social media marketing campaign metrics
+REM005,CON005,General,general,2027-01-14T09:30:00Z,pending,NOT-5001,Quarterly sales targets briefing and kickoff
+REM006,CON006,Task Deadline,deadline,2027-01-15T15:00:00Z,pending,TSK-1002,Submit monthly warehouse inventory audit report
+REM007,CON007,Meeting,meeting,2027-01-16T11:30:00Z,pending,MTG-2002,Cybersecurity compliance audit preparation meeting
+REM008,CON008,General,general,2027-01-17T10:00:00Z,pending,NOT-5002,Office equipment requisition and renewal schedule
+REM009,CON009,Payment,payment,2027-01-18T12:00:00Z,pending,INV-3002,Corporate tax consultation fee installment invoice
+REM010,CON010,Follow-up,follow_up,2027-01-19T14:00:00Z,pending,HR-4002,Follow-up with candidate interview feedback for Senior Dev role
+REM011,CON011,Task Deadline,deadline,2027-01-20T17:00:00Z,pending,TSK-1003,Finalize regional supply chain optimization plan
+REM012,CON012,Meeting,meeting,2027-01-21T13:00:00Z,pending,MTG-2003,Product brand redesign sync with external design agency
+REM013,CON013,Follow-up,follow_up,2027-01-22T10:30:00Z,pending,SLS-4003,Follow-up with enterprise client on contract renewal proposal
+REM014,CON014,General,general,2027-01-23T09:00:00Z,pending,NOT-5003,Facilities maintenance and power backup testing notice
+REM015,CON015,Task Deadline,deadline,2027-01-24T16:30:00Z,pending,TSK-1004,Complete database cluster backup verification routine
+REM016,CON016,Payment,payment,2027-01-25T11:00:00Z,pending,INV-3003,Quarterly office lease payment disbursement
+REM017,CON017,Meeting,meeting,2027-01-26T15:00:00Z,pending,MTG-2004,Sales team pipeline review and revenue forecasting
+REM018,CON018,Follow-up,follow_up,2027-01-27T10:00:00Z,pending,OPS-4004,Follow-up with fleet maintenance team on vehicle inspection
+REM019,CON019,General,general,2027-01-28T14:00:00Z,pending,NOT-5004,Employee engagement survey deadline announcement
+REM020,CON020,Task Deadline,deadline,2027-01-29T17:30:00Z,pending,TSK-1005,Submit digital marketing ad spend quarterly report
+REM021,CON001,Payment,payment,2027-01-30T10:00:00Z,pending,INV-3004,Annual server hosting invoice settlement
+REM022,CON003,Meeting,meeting,2027-01-31T11:30:00Z,pending,MTG-2005,Fiscal year-end financial statement review with auditors
+REM023,CON005,Follow-up,follow_up,2027-02-01T15:30:00Z,pending,SLS-4005,Follow-up on partner onboarding documentation
+REM024,CON007,Task Deadline,deadline,2027-02-02T16:00:00Z,pending,TSK-1006,Submit IT disaster recovery procedure test results

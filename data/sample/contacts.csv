@@ -1,0 +1,21 @@
+contact_id,first_name,last_name,email,department,company
+CON001,Aarav,Sharma,aarav.sharma@example.com,IT,Apex Innovations
+CON002,Priya,Patel,priya.patel@example.com,HR,Apex Innovations
+CON003,Rohan,Verma,rohan.verma@example.com,Finance,Nexus TechCorp
+CON004,Ananya,Iyer,ananya.iyer@example.com,Marketing,Nexus TechCorp
+CON005,Vikram,Malhotra,vikram.malhotra@example.com,Sales,Vanguard Logistics
+CON006,Neha,Gupta,neha.gupta@example.com,Operations,Vanguard Logistics
+CON007,Kabir,Mehta,kabir.mehta@example.com,IT,Horizon Media
+CON008,Sanya,Kapoor,sanya.kapoor@example.com,Administration,Horizon Media
+CON009,Arjun,Nair,arjun.nair@example.com,Finance,Crestline Partners
+CON010,Kavita,Rao,kavita.rao@example.com,HR,Crestline Partners
+CON011,Aditya,Joshi,aditya.joshi@example.com,Operations,Starlight Solutions
+CON012,Rhea,Sen,rhea.sen@example.com,Marketing,Starlight Solutions
+CON013,Dev,Chopra,dev.chopra@example.com,Sales,Zenith Global
+CON014,Pooja,Bansal,pooja.bansal@example.com,Administration,Zenith Global
+CON015,Manish,Reddy,manish.reddy@example.com,IT,BlueSky Enterprises
+CON016,Tanvi,Deshmukh,tanvi.deshmukh@example.com,Finance,BlueSky Enterprises
+CON017,Kunal,Saxena,kunal.saxena@example.com,Sales,Apex Innovations
+CON018,Ishita,Bose,ishita.bose@example.com,Operations,Nexus TechCorp
+CON019,Sameer,Kulkarni,sameer.kulkarni@example.com,HR,Horizon Media
+CON020,Meera,Menon,meera.menon@example.com,Marketing,Crestline Partners
