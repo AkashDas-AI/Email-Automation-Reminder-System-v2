@@ -29,10 +29,10 @@ The **Email Automation & Reminder System** features an exclusive, permanently en
 
 ## 2. Screenshot Catalog & Page Walkthrough
 
-All high-resolution reference screenshots are stored in `docs/screenshots/`.
+All high-resolution reference screenshots are stored in `images/dashboard/`.
 
 ```
-docs/screenshots/
+images/dashboard/
 ├── overview_dark.png
 ├── contacts_dark.png
 ├── reminders_dark.png
@@ -44,9 +44,9 @@ docs/screenshots/
 
 ---
 
-### 2.1 Overview Dashboard (`docs/screenshots/overview_dark.png`)
+### 2.1 Overview Dashboard (`images/dashboard/overview_dark.png`)
 
-![Overview Dark Mode](file:///d:/Projects/Python/Email%20Automation%20%26%20Reminder%20System/docs/screenshots/overview_dark.png)
+![Overview Dark Mode](file:///d:/Projects/Python/Email%20Automation%20%26%20Reminder%20System/images/dashboard/overview_dark.png)
 
 #### Layout & Visual Elements:
 1. **Header & Attribution**: Displays page title `Overview Dashboard` alongside author credit `Author: Akash Das | Executive Operational Center`.
@@ -63,9 +63,9 @@ docs/screenshots/
 
 ---
 
-### 2.2 Contacts Directory (`docs/screenshots/contacts_dark.png`)
+### 2.2 Contacts Directory (`images/dashboard/contacts_dark.png`)
 
-![Contacts Dark Mode](file:///d:/Projects/Python/Email%20Automation%20%26%20Reminder%20System/docs/screenshots/contacts_dark.png)
+![Contacts Dark Mode](file:///d:/Projects/Python/Email%20Automation%20%26%20Reminder%20System/images/dashboard/contacts_dark.png)
 
 #### Layout & Visual Elements:
 1. **Search & Filter Controls**: Text input allowing instant real-time filtering across name, email, department, or company.
@@ -78,9 +78,9 @@ docs/screenshots/
 
 ---
 
-### 2.3 Reminders Management (`docs/screenshots/reminders_dark.png`)
+### 2.3 Reminders Management (`images/dashboard/reminders_dark.png`)
 
-![Reminders Dark Mode](file:///d:/Projects/Python/Email%20Automation%20%26%20Reminder%20System/docs/screenshots/reminders_dark.png)
+![Reminders Dark Mode](file:///d:/Projects/Python/Email%20Automation%20%26%20Reminder%20System/images/dashboard/reminders_dark.png)
 
 #### Layout & Visual Elements:
 1. **Multi-Criterion Filter Strip**: Filter reminders by status (`pending`, `ready`, `simulated`, `sent`, `failed`), priority (`low`, `medium`, `high`, `urgent`), or operational category (`Audit`, `Review`, `Billing`, `Compliance`).
@@ -92,9 +92,9 @@ docs/screenshots/
 
 ---
 
-### 2.4 Email History & Audit Log (`docs/screenshots/email_history_dark.png`)
+### 2.4 Email History & Audit Log (`images/dashboard/email_history_dark.png`)
 
-![Email History Dark Mode](file:///d:/Projects/Python/Email%20Automation%20%26%20Reminder%20System/docs/screenshots/email_history_dark.png)
+![Email History Dark Mode](file:///d:/Projects/Python/Email%20Automation%20%26%20Reminder%20System/images/dashboard/email_history_dark.png)
 
 #### Layout & Visual Elements:
 1. **Historical Filter Strip**: Filter by execution outcome (`All`, `Simulated`, `Sent`, `Failed`, `Delivery Unknown`).
@@ -108,9 +108,9 @@ docs/screenshots/
 
 ---
 
-### 2.5 Insights & Analytics (`docs/screenshots/insights_dark.png`)
+### 2.5 Insights & Analytics (`images/dashboard/insights_dark.png`)
 
-![Insights Dark Mode](file:///d:/Projects/Python/Email%20Automation%20%26%20Reminder%20System/docs/screenshots/insights_dark.png)
+![Insights Dark Mode](file:///d:/Projects/Python/Email%20Automation%20%26%20Reminder%20System/images/dashboard/insights_dark.png)
 
 #### Layout & Visual Elements:
 1. **Analytical KPI Metrics Strip**:
@@ -127,9 +127,9 @@ docs/screenshots/
 
 ---
 
-### 2.6 Reports & Data Exports (`docs/screenshots/reports_dark.png`)
+### 2.6 Reports & Data Exports (`images/dashboard/reports_dark.png`)
 
-![Reports Dark Mode](file:///d:/Projects/Python/Email%20Automation%20%26%20Reminder%20System/docs/screenshots/reports_dark.png)
+![Reports Dark Mode](file:///d:/Projects/Python/Email%20Automation%20%26%20Reminder%20System/images/dashboard/reports_dark.png)
 
 #### Layout & Visual Elements:
 1. **One-Click CSV Download Cards**:
@@ -140,9 +140,9 @@ docs/screenshots/
 
 ---
 
-### 2.7 Settings & System Diagnostics (`docs/screenshots/settings_dark.png`)
+### 2.7 Settings & System Diagnostics (`images/dashboard/settings_dark.png`)
 
-![Settings Dark Mode](file:///d:/Projects/Python/Email%20Automation%20%26%20Reminder%20System/docs/screenshots/settings_dark.png)
+![Settings Dark Mode](file:///d:/Projects/Python/Email%20Automation%20%26%20Reminder%20System/images/dashboard/settings_dark.png)
 
 #### Layout & Visual Elements:
 1. **Runtime Configuration Overview**:

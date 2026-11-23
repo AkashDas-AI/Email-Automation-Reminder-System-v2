@@ -104,12 +104,10 @@ docs/TECHNICAL_QA_GUIDE.md
 # Explicit Allowlist for Project Assets & Required Directories
 # ==============================================================================
 !docs/
-!docs/screenshots/
-!docs/screenshots/*.png
-!docs/screenshots/.gitkeep
 !images/
 !images/architecture/.gitkeep
 !images/dashboard/.gitkeep
+!images/dashboard/*.png
 !templates/
 !tests/
 !data/sample/
