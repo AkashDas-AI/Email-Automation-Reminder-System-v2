@@ -99,6 +99,7 @@ scratch/
 # ==============================================================================
 docs/INTERVIEW_PREPARATION_GUIDE.md
 docs/TECHNICAL_QA_GUIDE.md
+docs/ENVIRONMENT_CLEANUP_AND_RESTORATION_GUIDE.md
 
 # ==============================================================================
 # Explicit Allowlist for Project Assets & Required Directories
